@@ -45,3 +45,9 @@ Thumbs.db
 desktop.ini
 .vscode/*
 !.vscode/extensions.json
+
+# ---------------------------------------------------------------
+# SEALED: story answer key. Kept off GitHub until Day 11, then
+# un-ignored and committed so the project is fully reproducible.
+# ---------------------------------------------------------------
+sealed/
