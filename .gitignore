@@ -1,0 +1,47 @@
+# ---------------------------------------------------------------
+# DATA: never commit generated data. Git is for code, not 8M rows.
+# Anyone can rebuild the data by running the seeded generator.
+# ---------------------------------------------------------------
+data/
+*.parquet
+*.csv
+*.csv.gz
+*.xlsx
+
+# ---------------------------------------------------------------
+# SECRETS: credentials and private keys stay on your machine only.
+# ---------------------------------------------------------------
+.env
+.env.*
+!.env.example
+*.p8
+*.pem
+connections.toml
+config.toml
+
+# ---------------------------------------------------------------
+# PYTHON: virtual environments and compiled caches
+# ---------------------------------------------------------------
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# ---------------------------------------------------------------
+# POWER BI (PBIP): commit the text definitions, not local caches.
+# cache.abf holds the imported data, so it is large and must stay out.
+# localSettings.json holds per-user settings.
+# ---------------------------------------------------------------
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+*.pbix
+
+# ---------------------------------------------------------------
+# OS / EDITOR clutter
+# ---------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
