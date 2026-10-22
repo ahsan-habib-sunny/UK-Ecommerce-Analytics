@@ -22,4 +22,18 @@ Python generator (seeded) → Parquet
 | `pbip/`      | Power BI Project (PBIP) files: the report and model as text |
 | `docs/`      | Data dictionary, design notes, screenshots                |
 
+## Generating the data
+
+The data is synthetic and reproducible: the same seed always gives the same rows. Nothing generated is committed to Git.
+
+```bash
+python -m venv .venv
+.venv/Scripts/python -m pip install -r generator/requirements.txt     # Windows (Git Bash)
+.venv/Scripts/python generator/generate.py --scale 0.0125             # ~100k rows, a few seconds
+.venv/Scripts/python generator/validate.py                            # row counts and integrity checks
+.venv/Scripts/python generator/generate.py                            # full ~8.1M rows, ~30 seconds
+```
+
+Output: Parquet files in `data/raw/<table>/`, one file per month for the large tables.
+
 _Work in progress. A full write-up comes at the end of the project._

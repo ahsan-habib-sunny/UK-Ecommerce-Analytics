@@ -1,0 +1,122 @@
+postcode_area,area_name,region,country,population_k
+AB,Aberdeen,Scotland,Scotland,470
+AL,St Albans,East of England,England,300
+B,Birmingham,West Midlands,England,1500
+BA,Bath,South West,England,450
+BB,Blackburn,North West,England,450
+BD,Bradford,Yorkshire and The Humber,England,650
+BH,Bournemouth,South West,England,550
+BL,Bolton,North West,England,330
+BN,Brighton,South East,England,900
+BR,Bromley,London,England,330
+BS,Bristol,South West,England,1050
+BT,Belfast,Northern Ireland,Northern Ireland,1900
+CA,Carlisle,North West,England,330
+CB,Cambridge,East of England,England,600
+CF,Cardiff,Wales,Wales,950
+CH,Chester,North West,England,650
+CM,Chelmsford,East of England,England,900
+CO,Colchester,East of England,England,650
+CR,Croydon,London,England,450
+CT,Canterbury,South East,England,650
+CV,Coventry,West Midlands,England,900
+CW,Crewe,North West,England,450
+DA,Dartford,South East,England,600
+DD,Dundee,Scotland,Scotland,330
+DE,Derby,East Midlands,England,900
+DG,Dumfries,Scotland,Scotland,150
+DH,Durham,North East,England,450
+DL,Darlington,North East,England,400
+DN,Doncaster,Yorkshire and The Humber,England,1000
+DT,Dorchester,South West,England,250
+DY,Dudley,West Midlands,England,550
+E,London E,London,England,1200
+EC,London EC,London,England,50
+EH,Edinburgh,Scotland,Scotland,1000
+EN,Enfield,London,England,400
+EX,Exeter,South West,England,600
+FK,Falkirk,Scotland,Scotland,300
+FY,Blackpool,North West,England,350
+G,Glasgow,Scotland,Scotland,1300
+GL,Gloucester,South West,England,750
+GU,Guildford,South East,England,950
+HA,Harrow,London,England,500
+HD,Huddersfield,Yorkshire and The Humber,England,350
+HG,Harrogate,Yorkshire and The Humber,England,200
+HP,Hemel Hempstead,East of England,England,650
+HR,Hereford,West Midlands,England,200
+HS,Outer Hebrides,Scotland,Scotland,30
+HU,Hull,Yorkshire and The Humber,England,500
+HX,Halifax,Yorkshire and The Humber,England,220
+IG,Ilford,London,England,400
+IP,Ipswich,East of England,England,650
+IV,Inverness,Scotland,Scotland,230
+KA,Kilmarnock,Scotland,Scotland,400
+KT,Kingston upon Thames,London,England,600
+KW,Kirkwall,Scotland,Scotland,40
+KY,Kirkcaldy,Scotland,Scotland,400
+L,Liverpool,North West,England,1150
+LA,Lancaster,North West,England,300
+LD,Llandrindod Wells,Wales,Wales,60
+LE,Leicester,East Midlands,England,1100
+LL,Llandudno,Wales,Wales,520
+LN,Lincoln,East Midlands,England,450
+LS,Leeds,Yorkshire and The Humber,England,900
+LU,Luton,East of England,England,400
+M,Manchester,North West,England,1700
+ME,Rochester,South East,England,600
+MK,Milton Keynes,South East,England,550
+ML,Motherwell,Scotland,Scotland,450
+N,London N,London,England,900
+NE,Newcastle upon Tyne,North East,England,1300
+NG,Nottingham,East Midlands,England,1200
+NN,Northampton,East Midlands,England,700
+NP,Newport,Wales,Wales,600
+NR,Norwich,East of England,England,800
+NW,London NW,London,England,900
+OL,Oldham,North West,England,450
+OX,Oxford,South East,England,650
+PA,Paisley,Scotland,Scotland,450
+PE,Peterborough,East of England,England,1150
+PH,Perth,Scotland,Scotland,220
+PL,Plymouth,South West,England,550
+PO,Portsmouth,South East,England,1100
+PR,Preston,North West,England,650
+RG,Reading,South East,England,900
+RH,Redhill,South East,England,600
+RM,Romford,London,England,650
+S,Sheffield,Yorkshire and The Humber,England,1300
+SA,Swansea,Wales,Wales,750
+SE,London SE,London,England,1600
+SG,Stevenage,East of England,England,450
+SK,Stockport,North West,England,600
+SL,Slough,South East,England,550
+SM,Sutton,London,England,300
+SN,Swindon,South West,England,550
+SO,Southampton,South East,England,900
+SP,Salisbury,South West,England,250
+SR,Sunderland,North East,England,300
+SS,Southend-on-Sea,East of England,England,550
+ST,Stoke-on-Trent,West Midlands,England,850
+SW,London SW,London,England,1100
+SY,Shrewsbury,West Midlands,England,550
+TA,Taunton,South West,England,350
+TD,Galashiels,Scotland,Scotland,120
+TF,Telford,West Midlands,England,250
+TN,Tonbridge,South East,England,900
+TQ,Torquay,South West,England,300
+TR,Truro,South West,England,500
+TS,Cleveland,North East,England,650
+TW,Twickenham,London,England,650
+UB,Southall,London,England,450
+W,London W,London,England,650
+WA,Warrington,North West,England,600
+WC,London WC,London,England,30
+WD,Watford,East of England,England,300
+WF,Wakefield,Yorkshire and The Humber,England,550
+WN,Wigan,North West,England,350
+WR,Worcester,West Midlands,England,400
+WS,Walsall,West Midlands,England,600
+WV,Wolverhampton,West Midlands,England,450
+YO,York,Yorkshire and The Humber,England,650
+ZE,Lerwick,Scotland,Scotland,23

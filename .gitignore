@@ -51,3 +51,9 @@ desktop.ini
 # un-ignored and committed so the project is fully reproducible.
 # ---------------------------------------------------------------
 sealed/
+
+# ---------------------------------------------------------------
+# EXCEPTIONS: small hand-made reference files ARE code, so keep them.
+# A "!" line re-includes something an earlier rule ignored.
+# ---------------------------------------------------------------
+!generator/seeds/*.csv

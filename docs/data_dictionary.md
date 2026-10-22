@@ -47,7 +47,7 @@ The column types are as delivered. Source systems are messy, so some columns arr
 | delivery_postcode | VARCHAR | |
 | promo_code | VARCHAR | NULL if none |
 | shipping_fee | NUMBER(10,2) | Inc. VAT |
-| payment_method | VARCHAR | card, paypal, klarna, apple_pay |
+| payment_method | VARCHAR | card, paypal, klarna, apple_pay; `marketplace` when the marketplace took payment |
 | status | VARCHAR | Completed or Cancelled |
 
 ### raw.order_lines (OMS)
@@ -193,7 +193,8 @@ All money columns are GBP. "ex-VAT" means VAT has been removed.
 | geography_key | Home postcode area |
 | registered_date | |
 | first_order_date | First completed order |
-| cohort_month | First day of the first-order month (used by the cohort matrix) |
+| cohort_month | First day of the first-order month (used by the cohort matrix). NULL for Pre-2023 customers |
+| cohort_label | `YYYY-MM`, or `Pre-2023` for customers registered before the data starts |
 | acquisition_channel | Channel of the first order (last non-direct click) |
 | age_band | 18–24, 25–34, … , Unknown |
 | marketing_opt_in | |

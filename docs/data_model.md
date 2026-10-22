@@ -26,17 +26,17 @@ Rule: **Power BI only reads MARTS.** Nothing downstream may read RAW or STAGING 
 
 | RAW table | Source system | Approx. rows | Load pattern |
 |---|---|---|---|
-| `customers` | CRM | 130k | Full snapshot |
+| `customers` | CRM | 151k | Full snapshot |
 | `products` | Product information system (PIM) | 2.5k | Full snapshot |
-| `orders` | Order management system (OMS) | 230k | Append by month |
-| `order_lines` | OMS | 600k | Append by month |
-| `returns` | Returns portal | 70k | Append by month |
-| `sessions` | Web/app analytics | 7.0M | Append by month |
+| `orders` | Order management system (OMS) | 240k | Append by month |
+| `order_lines` | OMS | 548k | Append by month |
+| `returns` | Returns portal | 62k | Append by month |
+| `sessions` | Web/app analytics | 7.1M | Append by month |
 | `campaigns` | Marketing calendar | 60 | Full snapshot |
-| `marketing_spend` | Ad platforms (daily export) | 15k | Append by month |
+| `marketing_spend` | Ad platforms (daily export) | 8k | Append by month |
 | `postcode_areas` | Reference data (static) | 121 | Full snapshot |
 
-**Total ≈ 8M rows.** Sessions dominate, because a realistic conversion rate (~3%) means far more sessions than orders.
+**Total ≈ 8.1M rows** (measured from a full generator run, seed 42). Sessions dominate, because a realistic conversion rate (~3%) means far more sessions than orders.
 
 ## 4. Star schema (MARTS)
 
@@ -118,7 +118,7 @@ These definitions are the contract. DAX measures (Days 9–10) must match them e
 ### Customers
 | Term | Definition |
 |---|---|
-| **Cohort** | Month of the customer's **first completed order** (not their registration date) |
+| **Cohort** | Month of the customer's **first completed order** (not their registration date). Customers registered before 2023-01-01 placed orders before our data begins, so their true first order is unknown: their cohort is **"Pre-2023"** and they are left out of the cohort matrix (a data-history truncation rule). |
 | **New customer** | A customer whose first completed order falls in the period |
 | **Active customer** | At least one completed order in the trailing 365 days |
 | **Churned customer** | Was active, but has placed no completed order for 365+ days |
