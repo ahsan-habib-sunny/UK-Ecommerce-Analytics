@@ -18,6 +18,7 @@ Python generator (seeded) → Parquet
 |--------------|-----------------------------------------------------------|
 | `snowflake/` | SQL scripts, numbered in run order                        |
 | `generator/` | Python data generator (data output is git-ignored)        |
+| `loader/`    | Uploads Parquet to Snowflake (PUT → COPY INTO RAW), key-pair auth |
 | `dataflows/` | Dataflow Gen2 definitions / Power Query M                 |
 | `pbip/`      | Power BI Project (PBIP) files: the report and model as text |
 | `docs/`      | Data dictionary, design notes, screenshots                |
