@@ -153,6 +153,7 @@ All money columns are GBP. "ex-VAT" means VAT has been removed.
 | customer_key | INT | |
 | product_key | INT | |
 | return_reason_key | INT | → dim_return_reason |
+| return_date | DATE | For incremental refresh |
 | quantity_returned | INT | |
 | refund_amount | NUMBER | ex-VAT |
 
@@ -176,6 +177,7 @@ All money columns are GBP. "ex-VAT" means VAT has been removed.
 | Column | Type | Description |
 |---|---|---|
 | spend_date_key | INT | |
+| spend_date | DATE | |
 | campaign_key | INT | -1 = always-on |
 | channel_key | INT | |
 | spend | NUMBER | ex-VAT |
@@ -183,7 +185,7 @@ All money columns are GBP. "ex-VAT" means VAT has been removed.
 | clicks | INT | |
 
 ### dim_date
-`date_key` (INT, YYYYMMDD), `date`, `day_of_week`, `day_name`, `is_weekend`, `week_start_date` (Monday), `month_start_date`, `month_name`, `month_number`, `year`, `quarter`, `fiscal_year` (e.g. `FY2025`), `fiscal_quarter`, `fiscal_month_number` (April = 1), `is_uk_bank_holiday`.
+2023-01-01 → 2026-12-31. `date_key` (INT, YYYYMMDD), `calendar_date`, `day_of_week` (1 = Monday), `day_name`, `is_weekend`, `week_start_date` (Monday), `month_start_date`, `month_name`, `month_short`, `month_number`, `year_month` (`YYYY-MM`), `year_month_sort`, `quarter`, `year`, `fiscal_month_number` (April = 1), `fiscal_quarter`, `fiscal_year` (e.g. `FY2025`), `is_uk_bank_holiday` (England & Wales).
 
 ### dim_customer
 | Column | Description |
@@ -193,6 +195,7 @@ All money columns are GBP. "ex-VAT" means VAT has been removed.
 | geography_key | Home postcode area |
 | registered_date | |
 | first_order_date | First completed order |
+| is_pre_2023 | Registered before the data starts (history cut off) |
 | cohort_month | First day of the first-order month (used by the cohort matrix). NULL for Pre-2023 customers |
 | cohort_label | `YYYY-MM`, or `Pre-2023` for customers registered before the data starts |
 | acquisition_channel | Channel of the first order (last non-direct click) |
