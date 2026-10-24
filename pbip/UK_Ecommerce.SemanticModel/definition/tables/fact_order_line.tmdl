@@ -1,0 +1,229 @@
+table fact_order_line
+	lineageTag: fe281965-6946-4ca2-ba70-e2c3dd7a207e
+
+	refreshPolicy
+		policyType: basic
+		rollingWindowGranularity: year
+		rollingWindowPeriods: 4
+		incrementalGranularity: month
+		incrementalPeriods: 3
+		pollingExpression = let MaxLOADED_AT = List.Max(fact_order_line[LOADED_AT]), accountForNull = if MaxLOADED_AT = null then #datetime(1901, 01, 01, 00, 00, 00) else MaxLOADED_AT in accountForNull
+		sourceExpression =
+			let
+			    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+			    dbo_FACT_ORDER_LINE = Source{[Schema="dbo",Item="FACT_ORDER_LINE"]}[Data],
+			    #"Filtered Rows" = Table.SelectRows(dbo_FACT_ORDER_LINE, each [ORDER_TS] >= RangeStart and [ORDER_TS] < RangeEnd)
+			in
+			    #"Filtered Rows"
+
+	column ORDER_LINE_KEY
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: b9a926cf-dbd5-4926-824c-3a4298dcf6c5
+		summarizeBy: sum
+		sourceColumn: ORDER_LINE_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORDER_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 076ed291-4a3a-4e06-9b3b-234e8438764d
+		summarizeBy: count
+		sourceColumn: ORDER_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORDER_DATE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 6bcd5e94-cd27-4af6-a83e-4d7248add0bf
+		summarizeBy: none
+		sourceColumn: ORDER_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORDER_TS
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 7377f06c-2740-4b4d-bc25-2c530dd6d37e
+		summarizeBy: none
+		sourceColumn: ORDER_TS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOADED_AT
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 51df487c-23b7-4c62-8ad7-1ec5e4c821a0
+		summarizeBy: none
+		sourceColumn: LOADED_AT
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CUSTOMER_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 4805d39b-8605-4b6f-a249-23bb0cb45113
+		summarizeBy: none
+		sourceColumn: CUSTOMER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCT_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: d5969bdc-5947-471b-b1c2-abcc92e0247f
+		summarizeBy: none
+		sourceColumn: PRODUCT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column GEOGRAPHY_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 82089a00-d5c1-48c8-bd30-6cf3258a6be4
+		summarizeBy: none
+		sourceColumn: GEOGRAPHY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 549678a4-fd97-4fb5-a6b0-b43511535541
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CAMPAIGN_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 5e41ba88-29f8-4b3a-ae01-fce343208bef
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SALES_CHANNEL
+		dataType: string
+		lineageTag: 484ee816-1d08-4dd5-be72-2e8df8df90c0
+		summarizeBy: none
+		sourceColumn: SALES_CHANNEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_CANCELLED
+		dataType: int64
+		formatString: 0
+		lineageTag: 361aa686-a6cc-428d-be63-f5cc6991ce9c
+		summarizeBy: sum
+		sourceColumn: IS_CANCELLED
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUANTITY
+		dataType: int64
+		formatString: 0
+		lineageTag: 16ca34fb-7ca6-44f5-af73-ee74641f8932
+		summarizeBy: sum
+		sourceColumn: QUANTITY
+
+		annotation SummarizationSetBy = Automatic
+
+	column GROSS_SALES
+		dataType: double
+		lineageTag: 3010c4e2-3b0c-4500-9b0d-2596af556ecd
+		summarizeBy: sum
+		sourceColumn: GROSS_SALES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DISCOUNT_AMOUNT
+		dataType: double
+		lineageTag: 8e51f34f-468a-4bad-a1a5-a4f5134f595d
+		summarizeBy: sum
+		sourceColumn: DISCOUNT_AMOUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NET_REVENUE
+		dataType: double
+		lineageTag: dea5935d-e2e4-42d8-8cf6-a38a293afdeb
+		summarizeBy: sum
+		sourceColumn: NET_REVENUE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VAT_AMOUNT
+		dataType: double
+		lineageTag: 94d845e8-7e7b-4081-af31-648274836434
+		summarizeBy: sum
+		sourceColumn: VAT_AMOUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COGS
+		dataType: double
+		lineageTag: 0286423a-3a3f-4428-acee-69dbbea62fb9
+		summarizeBy: sum
+		sourceColumn: COGS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GROSS_MARGIN
+		dataType: double
+		lineageTag: e3b8c7b0-67e4-4ede-aff7-81fbdf5ff2b9
+		summarizeBy: sum
+		sourceColumn: GROSS_MARGIN
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SHIPPING_ALLOCATED
+		dataType: double
+		lineageTag: c4981ae5-6c20-4ff7-80b8-0d27190e2a10
+		summarizeBy: sum
+		sourceColumn: SHIPPING_ALLOCATED
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_order_line = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_FACT_ORDER_LINE = Source{[Schema="dbo",Item="FACT_ORDER_LINE"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(dbo_FACT_ORDER_LINE, each [ORDER_TS] >= RangeStart and [ORDER_TS] < RangeEnd)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_IsMQueryFoldable = True
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

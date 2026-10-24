@@ -1,0 +1,81 @@
+table dim_campaign
+	lineageTag: 15f4cd15-2ea8-4afc-81a0-97276968bfcc
+
+	column CAMPAIGN_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: e37dec6d-55c4-4334-9963-94f1f8735b9d
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CAMPAIGN_CODE
+		dataType: string
+		lineageTag: bd43ee66-86ae-4481-abcc-e08fbedb520c
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_CODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column CAMPAIGN_NAME
+		dataType: string
+		lineageTag: 75d8ca8a-a2d6-47c4-bd32-ff51fd0eead0
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CAMPAIGN_TYPE
+		dataType: string
+		lineageTag: 89042873-324e-4b5e-bedc-a3db5a7614e6
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column START_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2f390e6e-693e-43f3-9a3a-bb05b21ae5c4
+		summarizeBy: none
+		sourceColumn: START_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column END_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 83ac9271-01b0-451c-abd1-4e2cb5db1869
+		summarizeBy: none
+		sourceColumn: END_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DISCOUNT_PCT
+		dataType: double
+		lineageTag: 239b82a9-f01d-4e27-abba-2bc11cfb438d
+		summarizeBy: sum
+		sourceColumn: DISCOUNT_PCT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition dim_campaign = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_CAMPAIGN = Source{[Schema="dbo",Item="DIM_CAMPAIGN"]}[Data]
+				in
+				    dbo_DIM_CAMPAIGN
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

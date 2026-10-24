@@ -1,0 +1,50 @@
+table dim_return_reason
+	lineageTag: ea09a0db-b20a-4b76-836d-e17435fc5f16
+
+	column RETURN_REASON_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 6dd38290-59f4-43df-82c5-8bf06e2dc6f3
+		summarizeBy: none
+		sourceColumn: RETURN_REASON_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column REASON_CODE
+		dataType: string
+		lineageTag: ed8f2e5e-e4db-4b6d-997c-fcc413f4756a
+		summarizeBy: none
+		sourceColumn: REASON_CODE
+
+		annotation SummarizationSetBy = Automatic
+
+	column REASON_DESCRIPTION
+		dataType: string
+		lineageTag: e0b396de-1556-45ab-b083-9e37acef0406
+		summarizeBy: none
+		sourceColumn: REASON_DESCRIPTION
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_CONTROLLABLE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 41801bfd-e32d-48fe-99b8-55293dc42a1e
+		summarizeBy: none
+		sourceColumn: IS_CONTROLLABLE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_return_reason = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_RETURN_REASON = Source{[Schema="dbo",Item="DIM_RETURN_REASON"]}[Data]
+				in
+				    dbo_DIM_RETURN_REASON
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

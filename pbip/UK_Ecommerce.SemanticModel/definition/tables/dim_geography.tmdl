@@ -1,0 +1,59 @@
+table dim_geography
+	lineageTag: c54a0d72-ad0b-4b45-b869-b12ec83706a4
+
+	column GEOGRAPHY_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 901ae547-1b72-44b1-872e-cf6fc74e2c9c
+		summarizeBy: none
+		sourceColumn: GEOGRAPHY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column POSTCODE_AREA
+		dataType: string
+		lineageTag: b73b81cf-bb39-469d-9ce4-079f81524d59
+		dataCategory: PostalCode
+		summarizeBy: none
+		sourceColumn: POSTCODE_AREA
+
+		annotation SummarizationSetBy = Automatic
+
+	column AREA_NAME
+		dataType: string
+		lineageTag: b36f23ec-4289-47d9-afa4-c247542f3000
+		summarizeBy: none
+		sourceColumn: AREA_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGION
+		dataType: string
+		lineageTag: 15c2b987-9f89-4358-ac51-b666a5dd12cd
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: REGION
+
+		annotation SummarizationSetBy = Automatic
+
+	column COUNTRY
+		dataType: string
+		lineageTag: d3bcb67e-6585-4d12-b485-3dcfd525a1eb
+		summarizeBy: none
+		sourceColumn: COUNTRY
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_geography = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_GEOGRAPHY = Source{[Schema="dbo",Item="DIM_GEOGRAPHY"]}[Data]
+				in
+				    dbo_DIM_GEOGRAPHY
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

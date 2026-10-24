@@ -1,0 +1,117 @@
+table dim_customer
+	lineageTag: 4b280c2a-9394-4f35-b91f-83a4135aa7bd
+
+	column CUSTOMER_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: d5494662-8623-4182-baea-4eb552c289f6
+		summarizeBy: none
+		sourceColumn: CUSTOMER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CUSTOMER_NAME
+		dataType: string
+		lineageTag: 629f9235-32ef-4fe1-b44b-c54ea24e60e9
+		summarizeBy: none
+		sourceColumn: CUSTOMER_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column GEOGRAPHY_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 7a6a10e5-73b0-437e-815f-41f61950f66e
+		summarizeBy: sum
+		sourceColumn: GEOGRAPHY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column REGISTERED_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5d480ed5-8267-430e-9845-becfcfdd3ba4
+		summarizeBy: none
+		sourceColumn: REGISTERED_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column FIRST_ORDER_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e0556a8e-422a-4d0f-897d-5ee681fa13d4
+		summarizeBy: none
+		sourceColumn: FIRST_ORDER_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IS_PRE_2023
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: d1699b2f-b5da-4ca1-8888-4660a5bcb855
+		summarizeBy: none
+		sourceColumn: IS_PRE_2023
+
+		annotation SummarizationSetBy = Automatic
+
+	column COHORT_MONTH
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9cd690d2-71ff-495e-ac4e-06caa01bc3f7
+		summarizeBy: none
+		sourceColumn: COHORT_MONTH
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column COHORT_LABEL
+		dataType: string
+		lineageTag: 37479916-1091-4987-97a2-b2e18ea99efd
+		summarizeBy: none
+		sourceColumn: COHORT_LABEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column ACQUISITION_CHANNEL
+		dataType: string
+		lineageTag: 7ec35d30-5b6c-4819-b558-27e046870e49
+		summarizeBy: none
+		sourceColumn: ACQUISITION_CHANNEL
+
+		annotation SummarizationSetBy = Automatic
+
+	column AGE_BAND
+		dataType: string
+		lineageTag: 8500c9d5-1e42-4cca-be8b-0e230c1ed857
+		summarizeBy: none
+		sourceColumn: AGE_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+	column MARKETING_OPT_IN
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a97d9b44-d1a5-4474-811a-c9bc2f7ac8ed
+		summarizeBy: none
+		sourceColumn: MARKETING_OPT_IN
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_customer = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_CUSTOMER = Source{[Schema="dbo",Item="DIM_CUSTOMER"]}[Data]
+				in
+				    dbo_DIM_CUSTOMER
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

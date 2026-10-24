@@ -1,0 +1,115 @@
+table fact_returns
+	lineageTag: 5e515fd8-4741-4d4f-a1a7-50baf89b79e3
+
+	column RETURN_KEY
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fe9e807c-c445-4f76-943c-b99df8694add
+		summarizeBy: sum
+		sourceColumn: RETURN_KEY
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORDER_LINE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 2c703266-b55c-43c6-8e43-2a3b4f10b841
+		summarizeBy: sum
+		sourceColumn: ORDER_LINE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column RETURN_DATE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: da2e3466-177a-4acc-b293-f5849ddd6a1f
+		summarizeBy: sum
+		sourceColumn: RETURN_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column ORDER_DATE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 5b999b5e-66dc-4ca5-bbd1-d56359e5e26b
+		summarizeBy: none
+		sourceColumn: ORDER_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column RETURN_DATE
+		dataType: dateTime
+		isHidden
+		formatString: Long Date
+		lineageTag: 8a2745ed-d242-422b-ad01-5fbd18683b01
+		summarizeBy: none
+		sourceColumn: RETURN_DATE
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CUSTOMER_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 4711916d-baf9-420c-a426-310ed569e2b8
+		summarizeBy: none
+		sourceColumn: CUSTOMER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCT_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 2659002f-142a-47d4-80c3-5acbf7c0d6fc
+		summarizeBy: none
+		sourceColumn: PRODUCT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column RETURN_REASON_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: d03b998d-aa27-473a-ab7f-5a75c3520361
+		summarizeBy: none
+		sourceColumn: RETURN_REASON_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column QUANTITY_RETURNED
+		dataType: int64
+		formatString: 0
+		lineageTag: c5438bbf-1aaf-4f55-bf91-3e55fd790c74
+		summarizeBy: sum
+		sourceColumn: QUANTITY_RETURNED
+
+		annotation SummarizationSetBy = Automatic
+
+	column REFUND_AMOUNT
+		dataType: double
+		lineageTag: 8ec5b450-97b5-4d0d-a4f5-fbb66b2a6be4
+		summarizeBy: sum
+		sourceColumn: REFUND_AMOUNT
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fact_returns = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_FACT_RETURNS = Source{[Schema="dbo",Item="FACT_RETURNS"]}[Data]
+				in
+				    dbo_FACT_RETURNS
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

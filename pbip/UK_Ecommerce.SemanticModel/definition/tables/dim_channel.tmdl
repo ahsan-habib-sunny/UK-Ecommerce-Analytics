@@ -1,0 +1,50 @@
+table dim_channel
+	lineageTag: 5d032010-5aa6-4dfe-8099-3ccbb818154b
+
+	column CHANNEL_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 8fd3c271-c444-4016-a160-9f891a5b58f8
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL_NAME
+		dataType: string
+		lineageTag: e60da26f-d49b-492d-97d2-f639731331ee
+		summarizeBy: none
+		sourceColumn: CHANNEL_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL_GROUP
+		dataType: string
+		lineageTag: 1fe75749-2629-46f1-becc-feff153d0406
+		summarizeBy: none
+		sourceColumn: CHANNEL_GROUP
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_PAID
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b54f84f6-5c8c-4b93-aa94-0ec06697139c
+		summarizeBy: none
+		sourceColumn: IS_PAID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_channel = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_CHANNEL = Source{[Schema="dbo",Item="DIM_CHANNEL"]}[Data]
+				in
+				    dbo_DIM_CHANNEL
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
