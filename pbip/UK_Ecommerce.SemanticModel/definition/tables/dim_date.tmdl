@@ -1,0 +1,192 @@
+table dim_date
+	lineageTag: 22748459-89f1-406f-8f7c-01b8c17eee89
+	dataCategory: Time
+
+	column DATE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 724d43c3-8ae0-4c01-8eba-2c47cd42cbeb
+		summarizeBy: none
+		sourceColumn: DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CALENDAR_DATE
+		dataType: dateTime
+		isKey
+		formatString: Long Date
+		lineageTag: 995900d0-9ed8-4d38-864f-3841e52b991e
+		summarizeBy: none
+		sourceColumn: CALENDAR_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DAY_OF_WEEK
+		dataType: int64
+		formatString: 0
+		lineageTag: bea9bcf2-b151-4b20-a275-c17192a624a6
+		summarizeBy: none
+		sourceColumn: DAY_OF_WEEK
+
+		annotation SummarizationSetBy = User
+
+	column DAY_NAME
+		dataType: string
+		lineageTag: ba3706b7-e18c-44a3-b027-82bcb42e460f
+		summarizeBy: none
+		sourceColumn: DAY_NAME
+		sortByColumn: DAY_OF_WEEK
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_WEEKEND
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6cea88de-80a0-4d79-8283-b1406d8beea7
+		summarizeBy: none
+		sourceColumn: IS_WEEKEND
+
+		annotation SummarizationSetBy = Automatic
+
+	column WEEK_START_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: db2cb726-e9a9-4995-9d88-8c3ceb84a603
+		summarizeBy: none
+		sourceColumn: WEEK_START_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MONTH_START_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9de3d6de-809d-4674-9204-6da06ed3936e
+		summarizeBy: none
+		sourceColumn: MONTH_START_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column MONTH_NAME
+		dataType: string
+		lineageTag: e7498c90-4fa5-486c-a5a4-4da3cbf91c55
+		summarizeBy: none
+		sourceColumn: MONTH_NAME
+		sortByColumn: MONTH_NUMBER
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTH_SHORT
+		dataType: string
+		lineageTag: 30c735bb-ceda-4c52-8571-14e5fad40eeb
+		summarizeBy: none
+		sourceColumn: MONTH_SHORT
+		sortByColumn: MONTH_NUMBER
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column MONTH_NUMBER
+		dataType: int64
+		formatString: 0
+		lineageTag: 370b4282-44a3-4e5e-96bc-e11bbfdfa667
+		summarizeBy: none
+		sourceColumn: MONTH_NUMBER
+
+		annotation SummarizationSetBy = User
+
+	column YEAR_MONTH
+		dataType: string
+		lineageTag: 8993ce5e-0202-4e41-a422-4f2e43b417e9
+		summarizeBy: none
+		sourceColumn: YEAR_MONTH
+		sortByColumn: YEAR_MONTH_SORT
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column YEAR_MONTH_SORT
+		dataType: int64
+		formatString: 0
+		lineageTag: c0b03257-36fa-4fd6-ab40-e371d69e0993
+		summarizeBy: none
+		sourceColumn: YEAR_MONTH_SORT
+
+		annotation SummarizationSetBy = User
+
+	column QUARTER
+		dataType: int64
+		formatString: 0
+		lineageTag: 18e71efc-6b85-4d64-9367-b5023d69e29c
+		summarizeBy: none
+		sourceColumn: QUARTER
+
+		annotation SummarizationSetBy = User
+
+	column YEAR
+		dataType: int64
+		formatString: 0
+		lineageTag: 396b50a2-899a-4500-a7e5-a27f9df67e79
+		summarizeBy: none
+		sourceColumn: YEAR
+
+		annotation SummarizationSetBy = User
+
+	column FISCAL_MONTH_NUMBER
+		dataType: int64
+		formatString: 0
+		lineageTag: 17f32cd8-5e8e-4e4a-b427-37c92671e41c
+		summarizeBy: none
+		sourceColumn: FISCAL_MONTH_NUMBER
+
+		annotation SummarizationSetBy = User
+
+	column FISCAL_QUARTER
+		dataType: string
+		lineageTag: bc9f57f5-0071-42a6-ac04-6ca578b38043
+		summarizeBy: none
+		sourceColumn: FISCAL_QUARTER
+
+		annotation SummarizationSetBy = Automatic
+
+	column FISCAL_YEAR
+		dataType: string
+		lineageTag: fc2faf79-8299-4ad1-b8a0-fc7460b743df
+		summarizeBy: none
+		sourceColumn: FISCAL_YEAR
+
+		annotation SummarizationSetBy = Automatic
+
+	column IS_UK_BANK_HOLIDAY
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 6bb22a44-ca51-4863-99bc-c636d7834c46
+		summarizeBy: none
+		sourceColumn: IS_UK_BANK_HOLIDAY
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_DATE = Source{[Schema="dbo",Item="DIM_DATE"]}[Data]
+				in
+				    dbo_DIM_DATE
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

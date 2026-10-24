@@ -1,0 +1,157 @@
+table fact_sessions
+	lineageTag: 708daf06-36e4-4d1f-8a41-2632eea6d8d0
+
+	refreshPolicy
+		policyType: basic
+		rollingWindowGranularity: year
+		rollingWindowPeriods: 4
+		incrementalGranularity: month
+		incrementalPeriods: 3
+		pollingExpression = let MaxLOADED_AT = List.Max(fact_sessions[LOADED_AT]), accountForNull = if MaxLOADED_AT = null then #datetime(1901, 01, 01, 00, 00, 00) else MaxLOADED_AT in accountForNull
+		sourceExpression =
+			let
+			    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+			    dbo_FACT_SESSIONS = Source{[Schema="dbo",Item="FACT_SESSIONS"]}[Data],
+			    #"Filtered Rows" = Table.SelectRows(dbo_FACT_SESSIONS, each [SESSION_START_TS] >= RangeStart and [SESSION_START_TS] < RangeEnd)
+			in
+			    #"Filtered Rows"
+
+	column SESSION_ID
+		dataType: string
+		isHidden
+		lineageTag: a4a9cfd8-46a0-4af0-a232-6efe093f6b78
+		summarizeBy: none
+		sourceColumn: SESSION_ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column SESSION_DATE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: a0dfd373-5a10-4b74-a81f-08d881b9e5aa
+		summarizeBy: none
+		sourceColumn: SESSION_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SESSION_START_TS
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: 86287d84-8fa0-4aa9-ab02-e275d1e6851e
+		summarizeBy: none
+		sourceColumn: SESSION_START_TS
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column LOADED_AT
+		dataType: dateTime
+		isHidden
+		formatString: General Date
+		lineageTag: e5a94f9d-b066-419d-bfd2-ca9cf4190a50
+		summarizeBy: none
+		sourceColumn: LOADED_AT
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CUSTOMER_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 77ce95e1-a02a-4b87-93b4-23db7bc82b73
+		summarizeBy: none
+		sourceColumn: CUSTOMER_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: c3c19424-409f-454c-93f8-416b69fadb93
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CAMPAIGN_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 3e60a1cb-c134-4247-bdd6-c773d7cdf3d2
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column GEOGRAPHY_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: c7f6ab2b-9e3b-43d6-824f-9fdabd9b711f
+		summarizeBy: none
+		sourceColumn: GEOGRAPHY_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column DEVICE
+		dataType: string
+		lineageTag: 49f71dca-8822-4348-a343-526ab68adbda
+		summarizeBy: none
+		sourceColumn: DEVICE
+
+		annotation SummarizationSetBy = Automatic
+
+	column LANDING_PAGE_TYPE
+		dataType: string
+		lineageTag: 7427af8d-80fd-40c9-ad51-54c3e50df329
+		summarizeBy: none
+		sourceColumn: LANDING_PAGE_TYPE
+
+		annotation SummarizationSetBy = Automatic
+
+	column PAGEVIEWS
+		dataType: int64
+		formatString: 0
+		lineageTag: b854d223-574a-47b9-9078-4f09a4bb1ca7
+		summarizeBy: sum
+		sourceColumn: PAGEVIEWS
+
+		annotation SummarizationSetBy = Automatic
+
+	column ADDED_TO_BASKET
+		dataType: int64
+		formatString: 0
+		lineageTag: 64f2a6a7-4845-4218-9a3e-d4deabb11944
+		summarizeBy: sum
+		sourceColumn: ADDED_TO_BASKET
+
+		annotation SummarizationSetBy = Automatic
+
+	column CONVERTED
+		dataType: int64
+		formatString: 0
+		lineageTag: d2c6ef9e-c0d5-4b8b-90c1-944c06947196
+		summarizeBy: sum
+		sourceColumn: CONVERTED
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_sessions = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_FACT_SESSIONS = Source{[Schema="dbo",Item="FACT_SESSIONS"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(dbo_FACT_SESSIONS, each [SESSION_START_TS] >= RangeStart and [SESSION_START_TS] < RangeEnd)
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_IsMQueryFoldable = True
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

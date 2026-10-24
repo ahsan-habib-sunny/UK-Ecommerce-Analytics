@@ -1,0 +1,123 @@
+table dim_product
+	lineageTag: 55d82527-5b1a-461a-ace9-fdaeb61241a5
+
+	column PRODUCT_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: f8aab53f-7697-4782-8cf9-1bdca56f1f35
+		summarizeBy: none
+		sourceColumn: PRODUCT_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SKU
+		dataType: string
+		lineageTag: 45b61917-8fda-44b7-9e30-57f02357c49f
+		summarizeBy: none
+		sourceColumn: SKU
+
+		annotation SummarizationSetBy = Automatic
+
+	column PRODUCT_NAME
+		dataType: string
+		lineageTag: c63e3da9-d768-4464-bb3e-af4230043296
+		summarizeBy: none
+		sourceColumn: PRODUCT_NAME
+
+		annotation SummarizationSetBy = Automatic
+
+	column CATEGORY
+		dataType: string
+		lineageTag: 430c7076-dabe-4908-b9bd-f7795fe03eed
+		summarizeBy: none
+		sourceColumn: CATEGORY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SUBCATEGORY
+		dataType: string
+		lineageTag: 2c66b0be-9506-4f71-adc4-edaa1ba3b9a6
+		summarizeBy: none
+		sourceColumn: SUBCATEGORY
+
+		annotation SummarizationSetBy = Automatic
+
+	column BRAND
+		dataType: string
+		lineageTag: b2bdada7-80a4-44f3-8bd4-fe32ae7a3ba6
+		summarizeBy: none
+		sourceColumn: BRAND
+
+		annotation SummarizationSetBy = Automatic
+
+	column LIST_PRICE
+		dataType: double
+		lineageTag: dfa3f50d-a41e-483d-850f-b5f0000a6a87
+		summarizeBy: sum
+		sourceColumn: LIST_PRICE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UNIT_COST
+		dataType: double
+		lineageTag: 366999e8-8993-4213-9d2c-c37b7fa68b3a
+		summarizeBy: sum
+		sourceColumn: UNIT_COST
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column VAT_RATE
+		dataType: double
+		lineageTag: b3c7727d-b6ec-4d91-8158-79844d27ec24
+		summarizeBy: sum
+		sourceColumn: VAT_RATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PRICE_BAND
+		dataType: string
+		lineageTag: 4a467fd0-484c-4d70-a1fe-3544c5deeb04
+		summarizeBy: none
+		sourceColumn: PRICE_BAND
+
+		annotation SummarizationSetBy = Automatic
+
+	column LAUNCHED_ON
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 96d5e284-f480-4ba0-bbd3-1ccf08bbf4a1
+		summarizeBy: none
+		sourceColumn: LAUNCHED_ON
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column IS_ACTIVE
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 4de720ac-bf4d-4b04-aa2a-c5617c4abbfa
+		summarizeBy: none
+		sourceColumn: IS_ACTIVE
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_DIM_PRODUCT = Source{[Schema="dbo",Item="DIM_PRODUCT"]}[Data]
+				in
+				    dbo_DIM_PRODUCT
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

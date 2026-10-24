@@ -1,0 +1,83 @@
+table fact_marketing_spend
+	lineageTag: d86170b5-a3b7-4d25-89b1-c86d10dc5c7c
+
+	column SPEND_DATE_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: ac410026-8201-4120-966d-c0a9d85d7f35
+		summarizeBy: none
+		sourceColumn: SPEND_DATE_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SPEND_DATE
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6ab145e4-6bd3-486e-9982-43e12fd83e80
+		summarizeBy: none
+		sourceColumn: SPEND_DATE
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CAMPAIGN_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: c92dc598-2667-4f14-8f8c-8f38ee7a6ae3
+		summarizeBy: none
+		sourceColumn: CAMPAIGN_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column CHANNEL_KEY
+		dataType: int64
+		formatString: 0
+		lineageTag: 58161e97-ac75-4caa-a6a4-90576c46059d
+		summarizeBy: none
+		sourceColumn: CHANNEL_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+	column SPEND
+		dataType: double
+		lineageTag: 25f2c82b-77f2-40a6-8771-e8faf5f8168d
+		summarizeBy: sum
+		sourceColumn: SPEND
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IMPRESSIONS
+		dataType: double
+		lineageTag: a54bec77-5870-4ccf-9c6a-5e2995e535f1
+		summarizeBy: sum
+		sourceColumn: IMPRESSIONS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CLICKS
+		dataType: int64
+		formatString: 0
+		lineageTag: 085cfafd-485d-40d1-b2e1-377a0a33cda3
+		summarizeBy: sum
+		sourceColumn: CLICKS
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_marketing_spend = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_FACT_MARKETING_SPEND = Source{[Schema="dbo",Item="FACT_MARKETING_SPEND"]}[Data]
+				in
+				    dbo_FACT_MARKETING_SPEND
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

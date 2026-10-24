@@ -1,0 +1,81 @@
+table _Measures
+	lineageTag: 5a0aa74e-e07a-4c47-8ed9-e935ae17e95e
+
+	measure 'Net Revenue' = ```
+			
+			    CALCULATE(SUM(fact_order_line[NET_REVENUE]), fact_order_line[IS_CANCELLED] = 0)
+			```
+		formatString: "£"#,0;-"£"#,0;"£"#,0
+		lineageTag: 154741fd-dd41-403d-9af1-4df104c9c88c
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure 'Gross Margin' = ```
+			
+			    CALCULATE(SUM(fact_order_line[gross_margin]), fact_order_line[is_cancelled] = 0)
+			```
+		formatString: "£"#,0;-"£"#,0;"£"#,0
+		lineageTag: 717cb8be-0664-4946-bf51-3045c81d6f55
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure 'Margin %' = DIVIDE([Gross Margin], [Net Revenue])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: d6a822ab-9d05-404b-a0f1-cf70693c6e93
+
+	measure Orders = ```
+			
+			    CALCULATE(DISTINCTCOUNT(fact_order_line[ORDER_ID]), fact_order_line[IS_CANCELLED] = 0)
+			```
+		formatString: #,0
+		lineageTag: ee3925c1-bab4-4ee2-a2ab-bfff3e7e4e6c
+
+	measure 'Units Sold' = CALCULATE(SUM(fact_order_line[quantity]), fact_order_line[is_cancelled] = 0)
+		formatString: #,0
+		lineageTag: a65bffed-0f71-4f88-a3bc-2f387fe0ccb8
+
+	measure AOV = DIVIDE([Net Revenue], [Orders])
+		formatString: "£"#,0.0;-"£"#,0.0;"£"#,0.0
+		lineageTag: 1dad3297-b706-49d6-9eb5-9c6c17ec9052
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure 'Units Returned' = SUM(fact_returns[quantity_returned])
+		formatString: #,0
+		lineageTag: 302d8af6-4e11-484a-b295-1bc03edee1c0
+
+	measure 'Return Rate %' = DIVIDE([Units Returned], [Units Sold])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: e532c489-3378-47d7-923a-db31f13de46f
+
+	measure Refunds = SUM(fact_returns[refund_amount])
+		formatString: "£"#,0;-"£"#,0;"£"#,0
+		lineageTag: 33a490bc-cd31-4c55-9224-bf3826125319
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	measure Sessions = COUNTROWS(fact_sessions)
+		formatString: #,0
+		lineageTag: 8c9454b4-9df7-4bc2-8c5b-6fe8476c4eba
+
+	measure 'Conversion Rate %' = DIVIDE(SUM(fact_sessions[CONVERTED]), [Sessions])
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 1ae23edf-25e7-415b-987d-f54c71fec415
+
+	measure 'Marketing Spend' = SUM(fact_marketing_spend[SPEND])
+		formatString: "£"#,0;-"£"#,0;"£"#,0
+		lineageTag: 7ea73fd6-2810-4760-8c0b-44a80f6e0b2e
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,77 @@
+relationship 30d0223a-2378-63b1-6820-ddf77380f47a
+	fromColumn: fact_order_line.ORDER_DATE_KEY
+	toColumn: dim_date.DATE_KEY
+
+relationship 6575c0fd-28a6-2da4-eb8e-f7e0774a00d8
+	fromColumn: fact_order_line.CUSTOMER_KEY
+	toColumn: dim_customer.CUSTOMER_KEY
+
+relationship beceaed4-0346-6dc2-8a35-40e8c846c32c
+	fromColumn: fact_order_line.PRODUCT_KEY
+	toColumn: dim_product.PRODUCT_KEY
+
+relationship 277a6a33-2286-c528-824f-818e548ff508
+	fromColumn: fact_order_line.GEOGRAPHY_KEY
+	toColumn: dim_geography.GEOGRAPHY_KEY
+
+relationship 148777d1-9dc7-abef-3d0c-8e150deb3ffa
+	fromColumn: fact_order_line.CHANNEL_KEY
+	toColumn: dim_channel.CHANNEL_KEY
+
+relationship 0b801277-bada-f7e1-99b2-6c900197afba
+	fromColumn: fact_order_line.CAMPAIGN_KEY
+	toColumn: dim_campaign.CAMPAIGN_KEY
+
+relationship 7486d160-af1c-8a0a-6b20-9d170c6c4a8a
+	fromColumn: fact_returns.ORDER_DATE_KEY
+	toColumn: dim_date.DATE_KEY
+
+relationship 9f3be288-7f13-23f4-4884-c0013a4a7a8e
+	isActive: false
+	fromColumn: fact_returns.RETURN_DATE_KEY
+	toColumn: dim_date.DATE_KEY
+
+relationship aa370d15-363f-8294-d6ad-84dacee351a2
+	fromColumn: fact_returns.CUSTOMER_KEY
+	toColumn: dim_customer.CUSTOMER_KEY
+
+relationship 13420ff5-26b1-2fa8-db8f-a00c5afcc419
+	fromColumn: fact_returns.PRODUCT_KEY
+	toColumn: dim_product.PRODUCT_KEY
+
+relationship 886124a1-52fa-4c6e-259b-e94afab130da
+	fromColumn: fact_returns.RETURN_REASON_KEY
+	toColumn: dim_return_reason.RETURN_REASON_KEY
+
+relationship bf432a9c-8918-a0ed-030d-77226cfa639d
+	fromColumn: fact_sessions.SESSION_DATE_KEY
+	toColumn: dim_date.DATE_KEY
+
+relationship b6faf9fb-1b49-21ea-e9fb-1be5bc26a559
+	fromColumn: fact_sessions.CUSTOMER_KEY
+	toColumn: dim_customer.CUSTOMER_KEY
+
+relationship 108a1a67-8dde-642d-f1b6-d579454c8fa4
+	fromColumn: fact_sessions.CHANNEL_KEY
+	toColumn: dim_channel.CHANNEL_KEY
+
+relationship cad03b67-0058-7acd-01ba-e1968b32ad79
+	fromColumn: fact_sessions.CAMPAIGN_KEY
+	toColumn: dim_campaign.CAMPAIGN_KEY
+
+relationship bc46434b-05a9-484f-2db7-8975c63cde9e
+	fromColumn: fact_sessions.GEOGRAPHY_KEY
+	toColumn: dim_geography.GEOGRAPHY_KEY
+
+relationship c55b1a8c-b025-18b0-5578-1e4983be0635
+	fromColumn: fact_marketing_spend.SPEND_DATE_KEY
+	toColumn: dim_date.DATE_KEY
+
+relationship 9b5e0ef6-8982-59c3-229f-d451b0bd9d1e
+	fromColumn: fact_marketing_spend.CAMPAIGN_KEY
+	toColumn: dim_campaign.CAMPAIGN_KEY
+
+relationship 5105a97a-bc68-f02f-9d3a-7d84a7eaf55a
+	fromColumn: fact_marketing_spend.CHANNEL_KEY
+	toColumn: dim_channel.CHANNEL_KEY
+
