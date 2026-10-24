@@ -194,7 +194,7 @@ SELECT -1, 'Anonymous', -1, NULL, NULL, FALSE, NULL, 'Anonymous', 'Unknown', 'Un
 CREATE OR REPLACE VIEW fact_order_line AS
 WITH lines AS (
     SELECT
-        l.order_line_id, l.order_id, l.quantity, l.unit_price, l.discount_amount, l.unit_cost,
+        l.order_line_id, l.order_id, l.quantity, l.unit_price, l.discount_amount, l.unit_cost, l._loaded_at,
         o.order_ts, o.order_date, o.customer_id, o.sales_channel, o.is_cancelled, o.shipping_fee,
         o.delivery_postcode_area, a.channel, a.campaign_code,
         p.product_id                         AS known_product_id,          -- NULL = orphan line
@@ -209,7 +209,8 @@ SELECT
     l.order_line_id                                  AS order_line_key,
     l.order_id,                                                         -- degenerate dimension
     TO_NUMBER(TO_CHAR(l.order_date, 'YYYYMMDD'))     AS order_date_key,
-    l.order_ts,                                                         -- for incremental refresh
+    l.order_ts,                                                         -- incremental refresh: filter column
+    l._loaded_at::TIMESTAMP_NTZ                      AS loaded_at,         -- incremental refresh: change-detection column
     l.customer_id                                    AS customer_key,
     COALESCE(l.known_product_id, -1)                 AS product_key,
     COALESCE(g.geography_key, -1)                    AS geography_key,
@@ -257,7 +258,8 @@ CREATE OR REPLACE VIEW fact_sessions AS
 SELECT
     s.session_id,
     TO_NUMBER(TO_CHAR(s.session_date, 'YYYYMMDD'))   AS session_date_key,
-    s.session_start_ts,                                                 -- for incremental refresh
+    s.session_start_ts,                                                 -- incremental refresh: filter column
+    s._loaded_at::TIMESTAMP_NTZ                      AS loaded_at,         -- incremental refresh: change-detection column
     COALESCE(s.customer_id, -1)                      AS customer_key,      -- -1 = anonymous
     COALESCE(ch.channel_key, -1)                     AS channel_key,
     COALESCE(cp.campaign_key, -1)                    AS campaign_key,
