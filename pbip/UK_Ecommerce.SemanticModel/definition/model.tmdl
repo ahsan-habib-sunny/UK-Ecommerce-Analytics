@@ -25,6 +25,7 @@ ref table fact_order_line
 ref table fact_returns
 ref table fact_sessions
 ref table _Measures
+ref table 'Cohort Offset'
 
 ref cultureInfo en-US
 

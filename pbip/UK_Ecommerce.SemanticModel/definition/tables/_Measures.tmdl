@@ -6,6 +6,7 @@ table _Measures
 			    CALCULATE(SUM(fact_order_line[NET_REVENUE]), fact_order_line[IS_CANCELLED] = 0)
 			```
 		formatString: "£"#,0;-"£"#,0;"£"#,0
+		displayFolder: Base
 		lineageTag: 154741fd-dd41-403d-9af1-4df104c9c88c
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
@@ -15,12 +16,14 @@ table _Measures
 			    CALCULATE(SUM(fact_order_line[gross_margin]), fact_order_line[is_cancelled] = 0)
 			```
 		formatString: "£"#,0;-"£"#,0;"£"#,0
+		displayFolder: Base
 		lineageTag: 717cb8be-0664-4946-bf51-3045c81d6f55
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
 
 	measure 'Margin %' = DIVIDE([Gross Margin], [Net Revenue])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Base
 		lineageTag: d6a822ab-9d05-404b-a0f1-cf70693c6e93
 
 	measure Orders = ```
@@ -28,45 +31,197 @@ table _Measures
 			    CALCULATE(DISTINCTCOUNT(fact_order_line[ORDER_ID]), fact_order_line[IS_CANCELLED] = 0)
 			```
 		formatString: #,0
+		displayFolder: Base
 		lineageTag: ee3925c1-bab4-4ee2-a2ab-bfff3e7e4e6c
 
 	measure 'Units Sold' = CALCULATE(SUM(fact_order_line[quantity]), fact_order_line[is_cancelled] = 0)
 		formatString: #,0
+		displayFolder: Base
 		lineageTag: a65bffed-0f71-4f88-a3bc-2f387fe0ccb8
 
 	measure AOV = DIVIDE([Net Revenue], [Orders])
 		formatString: "£"#,0.0;-"£"#,0.0;"£"#,0.0
+		displayFolder: Base
 		lineageTag: 1dad3297-b706-49d6-9eb5-9c6c17ec9052
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
 
 	measure 'Units Returned' = SUM(fact_returns[quantity_returned])
 		formatString: #,0
+		displayFolder: Base
 		lineageTag: 302d8af6-4e11-484a-b295-1bc03edee1c0
 
 	measure 'Return Rate %' = DIVIDE([Units Returned], [Units Sold])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Base
 		lineageTag: e532c489-3378-47d7-923a-db31f13de46f
 
 	measure Refunds = SUM(fact_returns[refund_amount])
 		formatString: "£"#,0;-"£"#,0;"£"#,0
+		displayFolder: Base
 		lineageTag: 33a490bc-cd31-4c55-9224-bf3826125319
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
 
 	measure Sessions = COUNTROWS(fact_sessions)
 		formatString: #,0
+		displayFolder: Base
 		lineageTag: 8c9454b4-9df7-4bc2-8c5b-6fe8476c4eba
 
 	measure 'Conversion Rate %' = DIVIDE(SUM(fact_sessions[CONVERTED]), [Sessions])
 		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Base
 		lineageTag: 1ae23edf-25e7-415b-987d-f54c71fec415
 
 	measure 'Marketing Spend' = SUM(fact_marketing_spend[SPEND])
 		formatString: "£"#,0;-"£"#,0;"£"#,0
+		displayFolder: Base
 		lineageTag: 7ea73fd6-2810-4760-8c0b-44a80f6e0b2e
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-GB"}
+
+	/// Last order date in the data. Caps time windows so they don't run past the data.
+	measure 'Data End Date' =
+			VAR _k = CALCULATE ( MAX ( fact_order_line[ORDER_DATE_KEY] ), REMOVEFILTERS () )
+			RETURN DATE ( QUOTIENT ( _k, 10000 ), MOD ( QUOTIENT ( _k, 100 ), 100 ), MOD ( _k, 100 ) )
+		formatString: dd/mm/yyyy
+		isHidden
+		displayFolder: Helpers
+		lineageTag: f6909649-10de-49c3-878c-a552f00278ee
+
+	/// Distinct customers with at least one completed order in the current filter context.
+	measure Customers = CALCULATE ( DISTINCTCOUNT ( fact_order_line[CUSTOMER_KEY] ), fact_order_line[IS_CANCELLED] = 0 )
+		formatString: #,0
+		displayFolder: Customers
+		lineageTag: c0e2adfc-a303-4909-9fb3-1dce51e5c322
+
+	/// Customers whose first completed order falls in the period (excludes Pre-2023 customers).
+	measure 'New Customers' = ```
+			
+			    VAR _from = MIN ( dim_date[CALENDAR_DATE] )
+			    VAR _to = MAX ( dim_date[CALENDAR_DATE] )
+			    RETURN
+			        CALCULATE (
+			            [Customers],
+			            dim_customer[IS_PRE_2023] = FALSE (),        -- history before 2023 is unknown
+			            dim_customer[FIRST_ORDER_DATE] >= _from,
+			            dim_customer[FIRST_ORDER_DATE] <= _to
+			        )
+			```
+		formatString: #,0
+		displayFolder: Customers
+		lineageTag: 6f46b2d5-1014-4df0-aef0-f574263de09c
+
+	/// Customers in the period who had ordered before it.
+	measure 'Returning Customers' = [Customers] - [New Customers]
+		formatString: #,0
+		displayFolder: Customers
+		lineageTag: 00c31649-31d4-4cf1-b016-809cd2f7a78a
+
+	measure 'New Customer %' = DIVIDE ( [New Customers], [Customers] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Customers
+		lineageTag: 718df506-14ed-40e0-8dec-abde06d197e3
+
+	measure 'Orders per Customer' = DIVIDE ( [Orders], [Customers] )
+		formatString: #,0.00
+		displayFolder: Customers
+		lineageTag: b4556db2-e3f6-4b7f-aab8-c66a03b0d185
+
+	/// Share of the period's customers who placed 2+ completed orders in that period.
+	measure 'Repeat Customer Rate %' = ```
+			
+			    VAR _customers =
+			        CALCULATETABLE ( VALUES ( fact_order_line[CUSTOMER_KEY] ), fact_order_line[IS_CANCELLED] = 0 )
+			    RETURN
+			        DIVIDE ( COUNTROWS ( FILTER ( _customers, [Orders] >= 2 ) ), COUNTROWS ( _customers ) )
+			```
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Customers
+		lineageTag: c9965e02-80a9-4809-a867-9b541cfc82d9
+
+	/// Customers with a completed order in the 365 days up to the end of the period.
+	measure 'Active Customers (12M)' = ```
+			
+			    VAR _end = MIN ( MAX ( dim_date[CALENDAR_DATE] ), [Data End Date] )
+			    RETURN
+			        CALCULATE ( [Customers], DATESBETWEEN ( dim_date[CALENDAR_DATE], _end - 364, _end ) )
+			```
+		formatString: #,0
+		displayFolder: Customers\Retention & Churn
+		lineageTag: 12a9efa4-358c-4eca-96b6-b40a8eb97b1b
+
+	/// Customers active in the 12 months before the current 12-month window.
+	measure 'Active Customers (Prior 12M)' =
+			VAR _end = MIN ( MAX ( dim_date[CALENDAR_DATE] ), [Data End Date] )
+			RETURN
+			    CALCULATE ( [Customers], DATESBETWEEN ( dim_date[CALENDAR_DATE], _end - 729, _end - 365 ) )
+		formatString: #,0
+		displayFolder: Customers\Retention & Churn
+		lineageTag: a853618a-2c8a-4373-a0fa-484b49c264ce
+
+	/// Active in the prior 12 months, but no completed order in the last 12 months.
+	measure 'Churned Customers (12M)' =
+			VAR _end = MIN ( MAX ( dim_date[CALENDAR_DATE] ), [Data End Date] )
+			VAR _prior =
+			    CALCULATETABLE (
+			        VALUES ( fact_order_line[CUSTOMER_KEY] ),
+			        fact_order_line[IS_CANCELLED] = 0,
+			        DATESBETWEEN ( dim_date[CALENDAR_DATE], _end - 729, _end - 365 )
+			    )
+			VAR _current =
+			    CALCULATETABLE (
+			        VALUES ( fact_order_line[CUSTOMER_KEY] ),
+			        fact_order_line[IS_CANCELLED] = 0,
+			        DATESBETWEEN ( dim_date[CALENDAR_DATE], _end - 364, _end )
+			    )
+			RETURN
+			    COUNTROWS ( EXCEPT ( _prior, _current ) )
+		formatString: #,0
+		displayFolder: Customers\Retention & Churn
+		lineageTag: 43490870-68f3-456a-8a99-5eb0caab9daa
+
+	measure 'Churn Rate % (12M)' = DIVIDE ( [Churned Customers (12M)], [Active Customers (Prior 12M)] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Customers\Retention & Churn
+		lineageTag: fcfa65c9-e67b-40b1-9852-2da7dc98bf4b
+
+	/// Customers in the cohort (first completed order in that month). Pre-2023 customers excluded.
+	measure 'Cohort Size' =
+			CALCULATE (
+			    COUNTROWS ( dim_customer ),
+			    dim_customer[IS_PRE_2023] = FALSE (),
+			    NOT ISBLANK ( dim_customer[COHORT_MONTH] )
+			)
+		formatString: #,0
+		displayFolder: Cohorts
+		lineageTag: 5dca8c69-f00d-4d98-8012-b1dc6f699645
+
+	/// Cohort customers who ordered in month N after their cohort month (N from 'Cohort Offset').
+	measure 'Retained Customers' = ```
+			
+			    VAR _cohort = SELECTEDVALUE ( dim_customer[COHORT_MONTH] )
+			    VAR _offset = SELECTEDVALUE ( 'Cohort Offset'[Month Offset] )
+			    VAR _month = EDATE ( _cohort, _offset )
+			    RETURN
+			        IF (
+			            NOT ISBLANK ( _cohort ) && NOT ISBLANK ( _offset ) && _month <= [Data End Date],
+			            CALCULATE (
+			                [Customers],
+			                dim_customer[IS_PRE_2023] = FALSE (),
+			                REMOVEFILTERS ( dim_date ),
+			                dim_date[MONTH_START_DATE] = _month
+			            )
+			        )
+			```
+		formatString: #,0
+		displayFolder: Cohorts
+		lineageTag: a4ed6f35-2d8f-4524-b387-3a25ef0119b8
+
+	measure 'Retention %' = DIVIDE ( [Retained Customers], [Cohort Size] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Cohorts
+		lineageTag: 349f2cb2-bc80-4023-bf5e-bbcfa5fa9bda
 
 	partition _Measures = m
 		mode: import

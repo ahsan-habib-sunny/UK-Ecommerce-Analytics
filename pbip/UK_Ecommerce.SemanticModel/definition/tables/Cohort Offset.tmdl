@@ -1,0 +1,14 @@
+table 'Cohort Offset'
+	lineageTag: 15065020-7931-48b7-a8b3-bf737785771f
+
+	column 'Month Offset'
+		dataType: int64
+		formatString: 0
+		lineageTag: f31267a7-5200-4246-bd3f-272722a28157
+		summarizeBy: none
+		sourceColumn: [Month Offset]
+
+	partition 'Cohort Offset' = calculated
+		mode: import
+		source = SELECTCOLUMNS ( GENERATESERIES ( 0, 44, 1 ), "Month Offset", [Value] )
+
