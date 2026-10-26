@@ -123,7 +123,7 @@ These definitions are the contract. DAX measures (Days 9–10) must match them e
 | **Active customer** | At least one completed order in the trailing 365 days |
 | **Churned customer** | Was active, but has placed no completed order for 365+ days |
 | **Retention (month N)** | Share of a cohort that placed a completed order in month N after the cohort month (M0 = cohort month = 100%) |
-| **RFM** | Recency, Frequency and Monetary value over the trailing 365 days, each scored in quintiles (1–5) |
+| **RFM** | Recency, Frequency and Monetary value over the trailing 365 days to the data end date, for customers active in that window. R and M are scored in quintiles (1–5); F uses order-count bands (1, 2, 3, 4, 5+), because most customers order once and frequency quintiles would collapse. Segments: Champions, Loyal, Promising, Needs Attention, At Risk, About to Sleep, Lost, plus Inactive (no order in 12M). |
 | **Test/internal accounts** | Excluded from all customer and sales measures (see STAGING rules, Day 5) |
 
 ### Traffic and marketing
