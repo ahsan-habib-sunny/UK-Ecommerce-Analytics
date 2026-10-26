@@ -1,0 +1,83 @@
+/// Time comparisons that work on every measure: pick an item to turn any measure into its MTD / YTD / PY / YoY version.
+table 'Time Intelligence'
+	lineageTag: 8016e73e-9670-45d6-bda0-e0f38d69b26d
+
+	calculationGroup
+		precedence: 10
+
+		calculationItem Current = SELECTEDMEASURE ()
+			ordinal: 0
+
+		calculationItem MTD = CALCULATE ( SELECTEDMEASURE (), DATESMTD ( dim_date[CALENDAR_DATE] ) )
+			ordinal: 1
+
+		calculationItem QTD = CALCULATE ( SELECTEDMEASURE (), DATESQTD ( dim_date[CALENDAR_DATE] ) )
+			ordinal: 2
+
+		calculationItem YTD = CALCULATE ( SELECTEDMEASURE (), DATESYTD ( dim_date[CALENDAR_DATE] ) )
+			ordinal: 3
+
+		calculationItem 'Fiscal YTD' = CALCULATE ( SELECTEDMEASURE (), DATESYTD ( dim_date[CALENDAR_DATE], "03-31" ) )
+			ordinal: 4
+
+		calculationItem PY = ```
+				VAR _k = CALCULATE ( MAX ( fact_order_line[ORDER_DATE_KEY] ), REMOVEFILTERS () )
+				VAR _last = DATE ( QUOTIENT ( _k, 10000 ), MOD ( QUOTIENT ( _k, 100 ), 100 ), MOD ( _k, 100 ) )
+				-- Compare like with like: only the part of the current period that has data
+				VAR _dates = FILTER ( VALUES ( dim_date[CALENDAR_DATE] ), dim_date[CALENDAR_DATE] <= _last )
+				RETURN
+				    CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( _dates ) )
+				```
+			ordinal: 5
+
+		calculationItem 'PY YTD' = ```
+				VAR _k = CALCULATE ( MAX ( fact_order_line[ORDER_DATE_KEY] ), REMOVEFILTERS () )
+				VAR _last = DATE ( QUOTIENT ( _k, 10000 ), MOD ( QUOTIENT ( _k, 100 ), 100 ), MOD ( _k, 100 ) )
+				-- Compare like with like: only the part of the current period that has data
+				VAR _dates = FILTER ( VALUES ( dim_date[CALENDAR_DATE] ), dim_date[CALENDAR_DATE] <= _last )
+				RETURN
+				    CALCULATE ( SELECTEDMEASURE (), DATESYTD ( SAMEPERIODLASTYEAR ( _dates ) ) )
+				```
+			ordinal: 6
+
+		calculationItem YoY = ```
+				VAR _k = CALCULATE ( MAX ( fact_order_line[ORDER_DATE_KEY] ), REMOVEFILTERS () )
+				VAR _last = DATE ( QUOTIENT ( _k, 10000 ), MOD ( QUOTIENT ( _k, 100 ), 100 ), MOD ( _k, 100 ) )
+				-- Compare like with like: only the part of the current period that has data
+				VAR _dates = FILTER ( VALUES ( dim_date[CALENDAR_DATE] ), dim_date[CALENDAR_DATE] <= _last )
+				VAR _py = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( _dates ) )
+				RETURN
+				    IF ( NOT ISBLANK ( _py ), SELECTEDMEASURE () - _py )
+				```
+			ordinal: 7
+
+		calculationItem 'YoY %' = ```
+				VAR _k = CALCULATE ( MAX ( fact_order_line[ORDER_DATE_KEY] ), REMOVEFILTERS () )
+				VAR _last = DATE ( QUOTIENT ( _k, 10000 ), MOD ( QUOTIENT ( _k, 100 ), 100 ), MOD ( _k, 100 ) )
+				-- Compare like with like: only the part of the current period that has data
+				VAR _dates = FILTER ( VALUES ( dim_date[CALENDAR_DATE] ), dim_date[CALENDAR_DATE] <= _last )
+				VAR _py = CALCULATE ( SELECTEDMEASURE (), SAMEPERIODLASTYEAR ( _dates ) )
+				RETURN
+				    DIVIDE ( SELECTEDMEASURE () - _py, _py )
+				```
+			ordinal: 8
+			formatStringDefinition = "0.0%"
+
+		calculationItem 'Rolling 12M' = CALCULATE ( SELECTEDMEASURE (), DATESINPERIOD ( dim_date[CALENDAR_DATE], MAX ( dim_date[CALENDAR_DATE] ), -12, MONTH ) )
+			ordinal: 9
+
+	column 'Time Calculation'
+		dataType: string
+		lineageTag: 95e55ef1-2e76-4a67-b0bf-900482ac7754
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: db0d001f-f4b6-4795-910d-2deb6e7a6f5d
+		summarizeBy: none
+		sourceColumn: Ordinal
+

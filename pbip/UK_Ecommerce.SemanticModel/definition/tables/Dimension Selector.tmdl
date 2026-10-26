@@ -1,0 +1,45 @@
+/// Field parameter: lets report users switch a visual's breakdown (axis or rows).
+table 'Dimension Selector'
+	lineageTag: 8ebee76e-e6d7-4d47-b3b8-2a3cdd401abf
+
+	column 'Dimension Selector'
+		lineageTag: ab801fb8-0172-4b8f-8eed-8b4133064347
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Dimension Selector Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Dimension Selector Fields'
+
+	column 'Dimension Selector Fields'
+		isHidden
+		lineageTag: 4e56abe1-d695-4bd7-b015-b4a463badc41
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Dimension Selector Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'Dimension Selector Order'
+		isHidden
+		formatString: 0
+		lineageTag: a4c4fd0f-85bc-4ecf-82e9-6e3e1a7881d6
+		summarizeBy: none
+		sourceColumn: [Value3]
+
+	partition 'Dimension Selector' = calculated
+		mode: import
+		source =
+				{
+				    ("Region", NAMEOF ( dim_geography[REGION] ), 0),
+				    ("Category", NAMEOF ( dim_product[CATEGORY] ), 1),
+				    ("Marketing Channel", NAMEOF ( dim_channel[CHANNEL_NAME] ), 2),
+				    ("Campaign Type", NAMEOF ( dim_campaign[CAMPAIGN_TYPE] ), 3),
+				    ("Age Band", NAMEOF ( dim_customer[AGE_BAND] ), 4),
+				    ("RFM Segment", NAMEOF ( 'Customer RFM'[RFM Segment] ), 5)
+				}
+

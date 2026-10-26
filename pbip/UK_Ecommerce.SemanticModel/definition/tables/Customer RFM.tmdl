@@ -1,0 +1,154 @@
+/// One row per customer: Recency, Frequency and Monetary value over the 12 months to the data end date, scored 1-5, plus a segment.
+table 'Customer RFM'
+	lineageTag: 4ef66009-4c21-411b-9977-80ed0b3df10a
+
+	column CUSTOMER_KEY
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 2f7b6ee6-b6c3-4475-86c2-5bcf7c6b5625
+		summarizeBy: none
+		sourceColumn: [CUSTOMER_KEY]
+
+	column 'Last Order Date'
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 1166e133-af20-46d2-b8f1-b51f48b051f6
+		summarizeBy: none
+		sourceColumn: [Last Order Date]
+
+	column 'Recency Days'
+		dataType: int64
+		formatString: #,0
+		lineageTag: 32eae74b-3c53-42eb-970b-026c6bd9fb05
+		summarizeBy: none
+		sourceColumn: [Recency Days]
+
+	column 'Frequency 12M'
+		dataType: int64
+		formatString: #,0
+		lineageTag: 82434e1e-1b23-457b-b932-b3e2bdb17f06
+		summarizeBy: none
+		sourceColumn: [Frequency 12M]
+
+	column 'Monetary 12M'
+		dataType: double
+		formatString: "£"#,0.00
+		lineageTag: c996ce45-42b1-42c0-988f-aef04b0d9998
+		summarizeBy: none
+		sourceColumn: [Monetary 12M]
+
+	column 'R Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: d30b1357-cd97-4fcd-9c42-79295894df8e
+		summarizeBy: none
+		sourceColumn: [R Score]
+
+	column 'F Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: 989c4c93-bf9e-481a-8801-71ebeae04570
+		summarizeBy: none
+		sourceColumn: [F Score]
+
+	column 'M Score'
+		dataType: int64
+		formatString: 0
+		lineageTag: 45c90800-7b66-4f38-9445-b2c17bd2445e
+		summarizeBy: none
+		sourceColumn: [M Score]
+
+	column 'RFM Score'
+		dataType: string
+		lineageTag: c14e18c4-63b6-4734-ab62-963229237c3c
+		summarizeBy: none
+		sourceColumn: [RFM Score]
+
+	column 'RFM Segment'
+		dataType: string
+		lineageTag: 3b86d644-5162-443f-9cb5-5b133254815b
+		summarizeBy: none
+		sourceColumn: [RFM Segment]
+		sortByColumn: 'RFM Segment Sort'
+
+	column 'RFM Segment Sort'
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 6c05e8a2-8240-4521-b128-c832a25fee05
+		summarizeBy: none
+		sourceColumn: [RFM Segment Sort]
+
+	partition 'Customer RFM' = calculated
+		mode: import
+		source = ```
+				VAR _end = [Data End Date]
+				VAR _start = _end - 364
+				VAR _startKey = YEAR ( _start ) * 10000 + MONTH ( _start ) * 100 + DAY ( _start )
+				VAR _base =
+				    ADDCOLUMNS (
+				        FILTER ( ALL ( dim_customer[CUSTOMER_KEY] ), dim_customer[CUSTOMER_KEY] <> -1 ),
+				        "@LastKey", CALCULATE ( MAX ( fact_order_line[ORDER_DATE_KEY] ), fact_order_line[IS_CANCELLED] = 0 ),
+				        "@Freq", CALCULATE ( DISTINCTCOUNT ( fact_order_line[ORDER_ID] ), fact_order_line[IS_CANCELLED] = 0, fact_order_line[ORDER_DATE_KEY] >= _startKey ) + 0,
+				        "@Mon", CALCULATE ( SUM ( fact_order_line[NET_REVENUE] ), fact_order_line[IS_CANCELLED] = 0, fact_order_line[ORDER_DATE_KEY] >= _startKey ) + 0
+				    )
+				VAR _withDates =
+				    ADDCOLUMNS (
+				        _base,
+				        "@LastDate", IF ( NOT ISBLANK ( [@LastKey] ), DATE ( QUOTIENT ( [@LastKey], 10000 ), MOD ( QUOTIENT ( [@LastKey], 100 ), 100 ), MOD ( [@LastKey], 100 ) ) )
+				    )
+				VAR _withRec = ADDCOLUMNS ( _withDates, "@Rec", IF ( NOT ISBLANK ( [@LastDate] ), INT ( _end - [@LastDate] ) ) )
+				-- Quintile cut-offs, computed over customers active in the last 12 months only
+				VAR _active = FILTER ( _withRec, [@Freq] > 0 )
+				VAR _r20 = PERCENTILEX.INC ( _active, [@Rec], 0.2 )
+				VAR _r40 = PERCENTILEX.INC ( _active, [@Rec], 0.4 )
+				VAR _r60 = PERCENTILEX.INC ( _active, [@Rec], 0.6 )
+				VAR _r80 = PERCENTILEX.INC ( _active, [@Rec], 0.8 )
+				VAR _m20 = PERCENTILEX.INC ( _active, [@Mon], 0.2 )
+				VAR _m40 = PERCENTILEX.INC ( _active, [@Mon], 0.4 )
+				VAR _m60 = PERCENTILEX.INC ( _active, [@Mon], 0.6 )
+				VAR _m80 = PERCENTILEX.INC ( _active, [@Mon], 0.8 )
+				VAR _scored =
+				    ADDCOLUMNS (
+				        _withRec,
+				        "@R", IF ( [@Freq] > 0, SWITCH ( TRUE (), [@Rec] <= _r20, 5, [@Rec] <= _r40, 4, [@Rec] <= _r60, 3, [@Rec] <= _r80, 2, 1 ) ),
+				        -- F uses order-count bands: most customers order once, so frequency quintiles would be meaningless
+				        "@F", IF ( [@Freq] > 0, MIN ( [@Freq], 5 ) ),
+				        "@M", IF ( [@Freq] > 0, SWITCH ( TRUE (), [@Mon] >= _m80, 5, [@Mon] >= _m60, 4, [@Mon] >= _m40, 3, [@Mon] >= _m20, 2, 1 ) )
+				    )
+				VAR _segmented =
+				    ADDCOLUMNS (
+				        _scored,
+				        "@Segment",
+				            SWITCH (
+				                TRUE (),
+				                [@Freq] = 0, "Inactive (no order in 12M)",
+				                [@R] >= 4 && [@F] >= 3, "Champions",
+				                [@R] >= 3 && [@F] >= 2, "Loyal",
+				                [@R] >= 4, "Promising",
+				                [@R] = 3, "Needs Attention",
+				                [@F] >= 2, "At Risk",
+				                [@R] = 2, "About to Sleep",
+				                "Lost"
+				            )
+				    )
+				RETURN
+				    SELECTCOLUMNS (
+				        _segmented,
+				        "CUSTOMER_KEY", dim_customer[CUSTOMER_KEY],
+				        "Last Order Date", [@LastDate],
+				        "Recency Days", [@Rec],
+				        "Frequency 12M", [@Freq],
+				        "Monetary 12M", [@Mon],
+				        "R Score", [@R],
+				        "F Score", [@F],
+				        "M Score", [@M],
+				        "RFM Score", IF ( [@Freq] > 0, [@R] & [@F] & [@M] ),
+				        "RFM Segment", [@Segment],
+				        "RFM Segment Sort",
+				            SWITCH ( [@Segment], "Champions", 1, "Loyal", 2, "Promising", 3, "Needs Attention", 4,
+				                                 "At Risk", 5, "About to Sleep", 6, "Lost", 7, 8 )
+				    )
+				```
+

@@ -75,3 +75,10 @@ relationship 5105a97a-bc68-f02f-9d3a-7d84a7eaf55a
 	fromColumn: fact_marketing_spend.CHANNEL_KEY
 	toColumn: dim_channel.CHANNEL_KEY
 
+relationship 83dabc5d-b322-4643-a379-df0156485788
+	fromColumn: fact_order_line.CUSTOMER_KEY
+	toColumn: 'Customer RFM'.CUSTOMER_KEY
+
+relationship 1d0d8203-91f3-4a7f-afe4-cb419727db4a
+	fromColumn: fact_returns.CUSTOMER_KEY
+	toColumn: 'Customer RFM'.CUSTOMER_KEY

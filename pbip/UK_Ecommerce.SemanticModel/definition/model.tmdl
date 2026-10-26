@@ -3,6 +3,7 @@ model Model
 	defaultPowerBIDataSourceVersion: powerBI_V3
 	sourceQueryCulture: en-US
 	valueFilterBehavior: independent
+	discourageImplicitMeasures
 	dataAccessOptions
 		legacyRedirects
 		returnErrorValuesAsNull
@@ -26,6 +27,10 @@ ref table fact_returns
 ref table fact_sessions
 ref table _Measures
 ref table 'Cohort Offset'
+ref table 'Customer RFM'
+ref table 'Time Intelligence'
+ref table 'Metric Selector'
+ref table 'Dimension Selector'
 
 ref cultureInfo en-US
 
