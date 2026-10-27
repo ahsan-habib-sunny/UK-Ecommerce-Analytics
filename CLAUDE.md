@@ -79,6 +79,10 @@ Repo: github.com/ahsan-habib-sunny/UK-Ecommerce-Analytics · Windows · Git Bash
   - Test users london/scotland/north.manager@ahsantheanalyst29.onmicrosoft.com are workspace Viewers and members of the role, and were verified in the service.
   - Pipeline `pl_uk_ecom_daily` (dataflow → model refresh, daily 06:00) is built and has run (described in `docs/security_and_refresh.md`).
   - "Test as role" is missing in this tenant's UI; test by signing in as the user in InPrivate.
+- Day 13 tuning:
+  - Model 756.1 MB → 55.8 MB. SESSION_ID, SESSION_START_TS and ORDER_TS are removed after the IR filter step; LOADED_AT is kept for polling.
+  - Query speed was already fine (slowest ~200 ms). Write-up: `docs/performance.md`.
+  - Before/after `.vpax` and Performance Analyzer JSON files are in `data/` (git-ignored). Parsers: `tools/vpax_summary.py`, `tools/perf_summary.py`.
 - **Next:**
   - Day 13: app, plus DAX Studio/VertiPaq tuning (before/after numbers).
   - Day 14: README, write-up, CV bullets, release tag.

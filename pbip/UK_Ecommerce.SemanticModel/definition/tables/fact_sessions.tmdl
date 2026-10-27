@@ -12,20 +12,11 @@ table fact_sessions
 			let
 			    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
 			    dbo_FACT_SESSIONS = Source{[Schema="dbo",Item="FACT_SESSIONS"]}[Data],
-			    #"Filtered Rows" = Table.SelectRows(dbo_FACT_SESSIONS, each [SESSION_START_TS] >= RangeStart and [SESSION_START_TS] < RangeEnd)
+			    #"Filtered Rows" = Table.SelectRows(dbo_FACT_SESSIONS, each [SESSION_START_TS] >= RangeStart and [SESSION_START_TS] < RangeEnd),
+			    // unused in the report; removed after the incremental-refresh filter to cut model size
+			    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows", {"SESSION_ID", "SESSION_START_TS"})
 			in
-			    #"Filtered Rows"
-
-	column SESSION_ID
-		dataType: string
-		isHidden
-		lineageTag: a4a9cfd8-46a0-4af0-a232-6efe093f6b78
-		summarizeBy: none
-		sourceColumn: SESSION_ID
-
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+			    #"Removed Columns"
 
 	column SESSION_DATE_KEY
 		dataType: int64
@@ -33,18 +24,6 @@ table fact_sessions
 		lineageTag: a0dfd373-5a10-4b74-a81f-08d881b9e5aa
 		summarizeBy: none
 		sourceColumn: SESSION_DATE_KEY
-
-		annotation SummarizationSetBy = Automatic
-
-	column SESSION_START_TS
-		dataType: dateTime
-		isHidden
-		formatString: General Date
-		lineageTag: 86287d84-8fa0-4aa9-ab02-e275d1e6851e
-		summarizeBy: none
-		sourceColumn: SESSION_START_TS
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -145,9 +124,11 @@ table fact_sessions
 				let
 				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
 				    dbo_FACT_SESSIONS = Source{[Schema="dbo",Item="FACT_SESSIONS"]}[Data],
-				    #"Filtered Rows" = Table.SelectRows(dbo_FACT_SESSIONS, each [SESSION_START_TS] >= RangeStart and [SESSION_START_TS] < RangeEnd)
+				    #"Filtered Rows" = Table.SelectRows(dbo_FACT_SESSIONS, each [SESSION_START_TS] >= RangeStart and [SESSION_START_TS] < RangeEnd),
+				    // unused in the report; removed after the incremental-refresh filter to cut model size
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows", {"SESSION_ID", "SESSION_START_TS"})
 				in
-				    #"Filtered Rows"
+				    #"Removed Columns"
 
 	annotation PBI_IsMQueryFoldable = True
 
