@@ -4,8 +4,8 @@ table 'Customer RFM'
 
 	column CUSTOMER_KEY
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
 		lineageTag: 2f7b6ee6-b6c3-4475-86c2-5bcf7c6b5625
 		summarizeBy: none
 		sourceColumn: [CUSTOMER_KEY]
@@ -74,15 +74,15 @@ table 'Customer RFM'
 
 	column 'RFM Segment Sort'
 		dataType: int64
-		formatString: 0
 		isHidden
+		formatString: 0
 		lineageTag: 6c05e8a2-8240-4521-b128-c832a25fee05
 		summarizeBy: none
 		sourceColumn: [RFM Segment Sort]
 
 	partition 'Customer RFM' = calculated
 		mode: import
-		source = ```
+		source =
 				VAR _end = [Data End Date]
 				VAR _start = _end - 364
 				VAR _startKey = YEAR ( _start ) * 10000 + MONTH ( _start ) * 100 + DAY ( _start )
@@ -150,5 +150,4 @@ table 'Customer RFM'
 				            SWITCH ( [@Segment], "Champions", 1, "Loyal", 2, "Promising", 3, "Needs Attention", 4,
 				                                 "At Risk", 5, "About to Sleep", 6, "Lost", 7, 8 )
 				    )
-				```
 

@@ -1,0 +1,12 @@
+createOrReplace
+
+	ref table 'Metric Selector'
+
+		column 'Metric Selector Order'
+			type: calculatedTableColumn
+			isHidden
+			formatString: 0
+			lineageTag: 74b37cfb-2bc4-4441-b99c-d1e9b54c6349
+			summarizeBy: none
+			sourceColumn: [Value3]
+

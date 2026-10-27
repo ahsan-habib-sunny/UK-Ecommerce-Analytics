@@ -1,0 +1,21 @@
+createOrReplace
+
+	ref table 'Dimension Selector'
+
+		measure selected_dimension_name = ```
+				
+				VAR _rawText = SELECTEDVALUE ( 'Dimension Selector'[Dimension Selector Fields] )
+				VAR _startBracket = SEARCH ( "[", _rawText, 1, 0 )
+				VAR _endBracket = SEARCH ( "]", _rawText, 1, 0 )
+				RETURN
+				    IF ( 
+				        _startBracket > 0 && _endBracket > _startBracket,
+				        -- Extracts text strictly between the [ and ] brackets
+				        MID ( _rawText, _startBracket + 1, _endBracket - _startBracket - 1 ),
+				        _rawText -- Fallback if no brackets are found
+				    )
+				```
+			lineageTag: 01e82fb0-598d-4012-89c0-102d18dbe569
+
+			annotation PBI_FormatHint = {"isGeneralNumber":true}
+

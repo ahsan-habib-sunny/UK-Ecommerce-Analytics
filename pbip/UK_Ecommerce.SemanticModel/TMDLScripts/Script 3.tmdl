@@ -1,0 +1,14 @@
+createOrReplace
+
+	ref table 'Dimension Selector'
+
+		column 'Dimension Selector'
+			type: calculatedTableColumn
+			lineageTag: ab801fb8-0172-4b8f-8eed-8b4133064347
+			summarizeBy: none
+			sourceColumn: [Value1]
+			sortByColumn: 'Dimension Selector Order'
+
+			relatedColumnDetails
+				groupByColumn: 'Dimension Selector Fields'
+

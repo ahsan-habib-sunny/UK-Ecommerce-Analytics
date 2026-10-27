@@ -2,6 +2,23 @@
 table 'Dimension Selector'
 	lineageTag: 8ebee76e-e6d7-4d47-b3b8-2a3cdd401abf
 
+	measure selected_dimension_name = ```
+			
+			VAR _rawText = SELECTEDVALUE ( 'Dimension Selector'[Dimension Selector Fields] )
+			VAR _startBracket = SEARCH ( "[", _rawText, 1, 0 )
+			VAR _endBracket = SEARCH ( "]", _rawText, 1, 0 )
+			RETURN
+			    IF ( 
+			        _startBracket > 0 && _endBracket > _startBracket,
+			        -- Extracts text strictly between the [ and ] brackets
+			        MID ( _rawText, _startBracket + 1, _endBracket - _startBracket - 1 ),
+			        _rawText -- Fallback if no brackets are found
+			    )
+			```
+		lineageTag: 01e82fb0-598d-4012-89c0-102d18dbe569
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column 'Dimension Selector'
 		lineageTag: ab801fb8-0172-4b8f-8eed-8b4133064347
 		summarizeBy: none
@@ -36,10 +53,8 @@ table 'Dimension Selector'
 		source =
 				{
 				    ("Region", NAMEOF ( dim_geography[REGION] ), 0),
-				    ("Category", NAMEOF ( dim_product[CATEGORY] ), 1),
-				    ("Marketing Channel", NAMEOF ( dim_channel[CHANNEL_NAME] ), 2),
-				    ("Campaign Type", NAMEOF ( dim_campaign[CAMPAIGN_TYPE] ), 3),
-				    ("Age Band", NAMEOF ( dim_customer[AGE_BAND] ), 4),
-				    ("RFM Segment", NAMEOF ( 'Customer RFM'[RFM Segment] ), 5)
+				    ("Sales Channel", NAMEOF ( fact_order_line[SALES_CHANNEL] ), 1),
+				    ("Price Band", NAMEOF ( dim_product[PRICE_BAND] ), 2),
+				    ("Age Band", NAMEOF ( dim_customer[AGE_BAND] ), 3)
 				}
 

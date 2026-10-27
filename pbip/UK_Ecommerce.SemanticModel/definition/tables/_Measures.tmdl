@@ -224,71 +224,82 @@ table _Measures
 		lineageTag: 349f2cb2-bc80-4023-bf5e-bbcfa5fa9bda
 
 	/// Customers active in the last 12 months (the RFM population).
-	measure 'RFM Customers' = ```
-			CALCULATE ( COUNTROWS ( 'Customer RFM' ), 'Customer RFM'[Frequency 12M] > 0 )
-			```
+	measure 'RFM Customers' = CALCULATE ( COUNTROWS ( 'Customer RFM' ), 'Customer RFM'[Frequency 12M] > 0 )
 		formatString: #,0
 		displayFolder: RFM
 		lineageTag: 05d74a0b-9269-48fc-b3c6-a99ccb1d7345
 
 	/// Net revenue in the last 12 months from the customers in context.
-	measure 'RFM Revenue 12M' = ```
-			SUM ( 'Customer RFM'[Monetary 12M] )
-			```
+	measure 'RFM Revenue 12M' = SUM ( 'Customer RFM'[Monetary 12M] )
 		formatString: "£"#,0
 		displayFolder: RFM
 		lineageTag: b1679829-be72-4bd5-b9c9-1a6d17ed7f1d
 
 	/// Share of last-12-month revenue (e.g. by segment).
-	measure 'RFM Revenue Share %' = ```
-			DIVIDE ( [RFM Revenue 12M], CALCULATE ( [RFM Revenue 12M], REMOVEFILTERS ( 'Customer RFM' ) ) )
-			```
+	measure 'RFM Revenue Share %' = DIVIDE ( [RFM Revenue 12M], CALCULATE ( [RFM Revenue 12M], REMOVEFILTERS ( 'Customer RFM' ) ) )
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: RFM
 		lineageTag: 00e094a1-206b-443c-b206-6c6ed5184b21
 
-	measure 'Avg Recency Days' = ```
-			CALCULATE ( AVERAGE ( 'Customer RFM'[Recency Days] ), 'Customer RFM'[Frequency 12M] > 0 )
-			```
+	measure 'Avg Recency Days' = CALCULATE ( AVERAGE ( 'Customer RFM'[Recency Days] ), 'Customer RFM'[Frequency 12M] > 0 )
 		formatString: #,0
 		displayFolder: RFM
 		lineageTag: 642e5adc-b263-4965-b38f-45be771b7274
 
 	/// Return on ad spend: attributed net revenue (last non-direct click) per £1 of spend.
-	measure ROAS = ```
-			DIVIDE ( [Net Revenue], [Marketing Spend] )
-			```
-		formatString: 0.00"x"
+	measure ROAS = DIVIDE ( [Net Revenue], [Marketing Spend] )
+		formatString: 0%;-0%;0%
 		displayFolder: Marketing
 		lineageTag: ef5c6c3f-ea44-4fba-9d1d-d3e9ba444fa6
 
 	/// Margin-based ROI: (attributed gross margin - spend) / spend. Negative = the campaign lost money.
-	measure 'Campaign ROI %' = ```
-			DIVIDE ( [Gross Margin] - [Marketing Spend], [Marketing Spend] )
-			```
+	measure 'Campaign ROI %' = DIVIDE ( [Gross Margin] - [Marketing Spend], [Marketing Spend] )
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Marketing
 		lineageTag: a7cb53b1-a2d3-4127-b1c5-648d709b917d
 
-	measure 'Cost per New Customer' = ```
-			DIVIDE ( [Marketing Spend], [New Customers] )
-			```
+	measure 'Cost per New Customer' = DIVIDE ( [Marketing Spend], [New Customers] )
 		formatString: "£"#,0.00
 		displayFolder: Marketing
 		lineageTag: 0e75e715-aeea-4ad4-ace6-fbbbae6ab990
 
 	/// Revenue credited to each customer's acquisition channel (compare with last-click Net Revenue).
-	measure 'Net Revenue (Acquisition Channel)' = ```
+	measure 'Net Revenue (Acquisition Channel)' =
 			-- First-touch view: credit ALL of a customer's revenue to the channel that acquired them
 			CALCULATE (
 			    [Net Revenue],
 			    TREATAS ( VALUES ( dim_channel[CHANNEL_NAME] ), dim_customer[ACQUISITION_CHANNEL] ),
 			    REMOVEFILTERS ( dim_channel )
 			)
-			```
 		formatString: "£"#,0
 		displayFolder: Marketing
 		lineageTag: 2ee08c87-19ab-4655-8be1-44e37a41c9fb
+
+	/// Share of sessions where something was added to the basket.
+	measure 'Add to Basket Rate %' = DIVIDE ( SUM ( fact_sessions[ADDED_TO_BASKET] ), [Sessions] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Web
+		lineageTag: 1ff4bd17-2ee5-4949-9f28-2604a96044b2
+
+	/// Of sessions with a basket, the share that placed an order (checkout completion).
+	measure 'Basket to Order %' = DIVIDE ( SUM ( fact_sessions[CONVERTED] ), SUM ( fact_sessions[ADDED_TO_BASKET] ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Web
+		lineageTag: 76d85fb5-c7f7-45dc-9465-c3893b2dcc49
+
+	/// Dynamic title for the Sales mix chart, e.g. "Net Revenue by Region".
+	measure 'Sales Mix Title' =
+			-- Field-parameter display columns can't be referenced in a measure (composite key),
+			-- so read the selected row's Order column and map it back to a name.
+			VAR _metric = SELECTEDVALUE ( 'Metric Selector'[Metric Selector Order], 0 )
+			VAR _by = SELECTEDVALUE ( 'Dimension Selector'[Dimension Selector Order], 0 )
+			RETURN
+			    SWITCH ( _metric, 0, "Net Revenue", 1, "Units Sold", 2, "Margin %", 3, "Return Rate %", 4, "Avg Order Value" )
+			        & " by "
+			        & SWITCH ( _by, 0, "Region", 1, "Sales Channel", 2, "Price Band", 3, "Age Band" )
+		isHidden
+		displayFolder: Helpers
+		lineageTag: d1ed84fe-ffe0-452e-95c5-9ce8defab6ae
 
 	partition _Measures = m
 		mode: import

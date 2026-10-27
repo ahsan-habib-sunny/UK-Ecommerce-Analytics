@@ -1,0 +1,18 @@
+createOrReplace
+
+	ref table 'Dimension Selector'
+
+		column 'Dimension Selector Fields'
+			type: calculatedTableColumn
+			isHidden
+			lineageTag: 4e56abe1-d695-4bd7-b015-b4a463badc41
+			summarizeBy: none
+			sourceColumn: [Value2]
+			sortByColumn: 'Dimension Selector Order'
+
+			extendedProperty ParameterMetadata =
+					{
+					  "version": 3,
+					  "kind": 2
+					}
+

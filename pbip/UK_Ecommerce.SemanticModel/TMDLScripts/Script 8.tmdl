@@ -1,0 +1,14 @@
+createOrReplace
+
+	ref table 'Metric Selector'
+
+		column 'Metric Selector'
+			type: calculatedTableColumn
+			lineageTag: e9674125-b70e-4925-8578-bd3662a95fa9
+			summarizeBy: none
+			sourceColumn: [Value1]
+			sortByColumn: 'Metric Selector Order'
+
+			relatedColumnDetails
+				groupByColumn: 'Metric Selector Fields'
+
