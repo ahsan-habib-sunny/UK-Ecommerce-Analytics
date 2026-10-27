@@ -12,9 +12,11 @@ table fact_order_line
 			let
 			    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
 			    dbo_FACT_ORDER_LINE = Source{[Schema="dbo",Item="FACT_ORDER_LINE"]}[Data],
-			    #"Filtered Rows" = Table.SelectRows(dbo_FACT_ORDER_LINE, each [ORDER_TS] >= RangeStart and [ORDER_TS] < RangeEnd)
+			    #"Filtered Rows" = Table.SelectRows(dbo_FACT_ORDER_LINE, each [ORDER_TS] >= RangeStart and [ORDER_TS] < RangeEnd),
+			    // unused in the report; removed after the incremental-refresh filter to cut model size
+			    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows", {"ORDER_TS"})
 			in
-			    #"Filtered Rows"
+			    #"Removed Columns"
 
 	column ORDER_LINE_KEY
 		dataType: int64
@@ -43,18 +45,6 @@ table fact_order_line
 		lineageTag: 6bcd5e94-cd27-4af6-a83e-4d7248add0bf
 		summarizeBy: none
 		sourceColumn: ORDER_DATE_KEY
-
-		annotation SummarizationSetBy = Automatic
-
-	column ORDER_TS
-		dataType: dateTime
-		isHidden
-		formatString: General Date
-		lineageTag: 7377f06c-2740-4b4d-bc25-2c530dd6d37e
-		summarizeBy: none
-		sourceColumn: ORDER_TS
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -217,9 +207,11 @@ table fact_order_line
 				let
 				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
 				    dbo_FACT_ORDER_LINE = Source{[Schema="dbo",Item="FACT_ORDER_LINE"]}[Data],
-				    #"Filtered Rows" = Table.SelectRows(dbo_FACT_ORDER_LINE, each [ORDER_TS] >= RangeStart and [ORDER_TS] < RangeEnd)
+				    #"Filtered Rows" = Table.SelectRows(dbo_FACT_ORDER_LINE, each [ORDER_TS] >= RangeStart and [ORDER_TS] < RangeEnd),
+				    // unused in the report; removed after the incremental-refresh filter to cut model size
+				    #"Removed Columns" = Table.RemoveColumns(#"Filtered Rows", {"ORDER_TS"})
 				in
-				    #"Filtered Rows"
+				    #"Removed Columns"
 
 	annotation PBI_IsMQueryFoldable = True
 
