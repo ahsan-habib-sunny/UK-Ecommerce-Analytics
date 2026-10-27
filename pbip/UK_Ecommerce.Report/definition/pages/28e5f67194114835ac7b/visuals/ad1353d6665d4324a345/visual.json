@@ -1,0 +1,107 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "ad1353d6665d4324a345",
+  "position": {
+    "x": 1280,
+    "y": 272,
+    "z": 9,
+    "height": 450,
+    "width": 616,
+    "tabOrder": 9
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_sessions"
+                    }
+                  },
+                  "Property": "DEVICE"
+                }
+              },
+              "queryRef": "fact_sessions.DEVICE",
+              "nativeQueryRef": "DEVICE",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Sessions"
+                }
+              },
+              "queryRef": "_Measures.Sessions",
+              "nativeQueryRef": "Sessions"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Add to Basket Rate %"
+                }
+              },
+              "queryRef": "_Measures.Add to Basket Rate %",
+              "nativeQueryRef": "Add to Basket Rate %"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Basket to Order %"
+                }
+              },
+              "queryRef": "_Measures.Basket to Order %",
+              "nativeQueryRef": "Basket to Order %"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Funnel by device'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

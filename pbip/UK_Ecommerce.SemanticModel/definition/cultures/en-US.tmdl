@@ -1,2 +1,25 @@
 cultureInfo en-US
 
+	linguisticMetadata =
+			{
+			  "Version": "1.0.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "dim_geography.region": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_geography",
+			        "ConceptualProperty": "REGION"
+			      },
+			      "State": "Generated"
+			    },
+			    "table_measures.net_revenue": {
+			      "Binding": {
+			        "ConceptualEntity": "_Measures",
+			        "ConceptualProperty": "Net Revenue"
+			      },
+			      "State": "Generated"
+			    }
+			  }
+			}
+		contentType: json
+

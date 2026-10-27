@@ -2,6 +2,11 @@
 table 'Metric Selector'
 	lineageTag: 7e77b109-1160-4303-b79f-4450eafc9b3d
 
+	measure selected_metric = SELECTEDVALUE('Metric Selector'[Metric Selector Fields])
+		lineageTag: 3e5f20ae-ff1e-47b8-a7a4-550a7e0d340a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column 'Metric Selector'
 		lineageTag: e9674125-b70e-4925-8578-bd3662a95fa9
 		summarizeBy: none
@@ -28,24 +33,19 @@ table 'Metric Selector'
 		isHidden
 		formatString: 0
 		lineageTag: 74b37cfb-2bc4-4441-b99c-d1e9b54c6349
-		summarizeBy: none
+		summarizeBy: sum
 		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
 
 	partition 'Metric Selector' = calculated
 		mode: import
 		source =
 				{
-				    ("Net Revenue", NAMEOF ( '_Measures'[Net Revenue] ), 0),
-				    ("Gross Margin", NAMEOF ( '_Measures'[Gross Margin] ), 1),
-				    ("Margin %", NAMEOF ( '_Measures'[Margin %] ), 2),
-				    ("Orders", NAMEOF ( '_Measures'[Orders] ), 3),
-				    ("AOV", NAMEOF ( '_Measures'[AOV] ), 4),
-				    ("Units Sold", NAMEOF ( '_Measures'[Units Sold] ), 5),
-				    ("Customers", NAMEOF ( '_Measures'[Customers] ), 6),
-				    ("New Customers", NAMEOF ( '_Measures'[New Customers] ), 7),
-				    ("Return Rate %", NAMEOF ( '_Measures'[Return Rate %] ), 8),
-				    ("Sessions", NAMEOF ( '_Measures'[Sessions] ), 9),
-				    ("Conversion Rate %", NAMEOF ( '_Measures'[Conversion Rate %] ), 10),
-				    ("Marketing Spend", NAMEOF ( '_Measures'[Marketing Spend] ), 11)
+				    ("Net Revenue", NAMEOF ( _Measures[Net Revenue] ), 0),
+				    ("Units Sold", NAMEOF ( _Measures[Units Sold] ), 1),
+				    ("Margin %", NAMEOF ( _Measures[Margin %] ), 2),
+				    ("Return Rate %", NAMEOF ( _Measures[Return Rate %] ), 3),
+				    ("Avg Order Value", NAMEOF ( _Measures[AOV] ), 4)
 				}
 

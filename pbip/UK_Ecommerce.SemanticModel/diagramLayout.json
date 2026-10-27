@@ -4,7 +4,7 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 0,
+        "x": 1462,
         "y": 3
       },
       "nodes": [
@@ -152,11 +152,79 @@
           "zIndex": 6
         },
         {
-          "location": {},
+          "location": {
+            "x": 1736,
+            "y": 431
+          },
           "nodeIndex": "_Measures",
           "nodeLineageTag": "5a0aa74e-e07a-4c47-8ed9-e935ae17e95e",
           "size": {
             "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2020,
+            "y": 481
+          },
+          "nodeIndex": "Cohort Offset",
+          "nodeLineageTag": "15065020-7931-48b7-a8b3-bf737785771f",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2304,
+            "y": 431
+          },
+          "nodeIndex": "Customer RFM",
+          "nodeLineageTag": "4ef66009-4c21-411b-9977-80ed0b3df10a",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2588,
+            "y": 505
+          },
+          "nodeIndex": "Dimension Selector",
+          "nodeLineageTag": "8ebee76e-e6d7-4d47-b3b8-2a3cdd401abf",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2872,
+            "y": 505
+          },
+          "nodeIndex": "Metric Selector",
+          "nodeLineageTag": "7e77b109-1160-4303-b79f-4450eafc9b3d",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3156,
+            "y": 517
+          },
+          "nodeIndex": "Time Intelligence",
+          "nodeLineageTag": "8016e73e-9670-45d6-bda0-e0f38d69b26d",
+          "size": {
+            "height": 128,
             "width": 234
           },
           "zIndex": 0

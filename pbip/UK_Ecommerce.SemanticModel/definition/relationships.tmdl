@@ -82,3 +82,4 @@ relationship 83dabc5d-b322-4643-a379-df0156485788
 relationship 1d0d8203-91f3-4a7f-afe4-cb419727db4a
 	fromColumn: fact_returns.CUSTOMER_KEY
 	toColumn: 'Customer RFM'.CUSTOMER_KEY
+

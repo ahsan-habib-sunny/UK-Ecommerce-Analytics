@@ -8,8 +8,8 @@ Everything below was written directly into the PBIP model files. Open `pbip/UK_E
 |---|---|---|
 | **Customer RFM** | Calculated table (one row per customer) | Recency, Frequency, Monetary over the 12 months to the data end date; R/F/M scores 1–5; **RFM Segment**. Related to `fact_order_line` and `fact_returns`, so a segment slicer filters sales. |
 | **Time Intelligence** | Calculation group | Current · MTD · QTD · YTD · Fiscal YTD · PY · PY YTD · YoY · YoY % · Rolling 12M, for **any** measure |
-| **Metric Selector** | Field parameter | Switch a visual between 12 measures (Net Revenue, Orders, Margin %, Conversion…) |
-| **Dimension Selector** | Field parameter | Switch a visual's breakdown: Region, Category, Marketing Channel, Campaign Type, Age Band, RFM Segment |
+| **Metric Selector** | Field parameter | Switch a visual between Net Revenue, Units Sold, Margin %, Return Rate %, Avg Order Value |
+| **Dimension Selector** | Field parameter | Switch a visual's breakdown: Region, Sales Channel, Price Band, Age Band |
 | Measures, **RFM** folder | RFM Customers · RFM Revenue 12M · RFM Revenue Share % · Avg Recency Days | |
 | Measures, **Marketing** folder | ROAS · Campaign ROI % · Cost per New Customer · Net Revenue (Acquisition Channel) | |
 
