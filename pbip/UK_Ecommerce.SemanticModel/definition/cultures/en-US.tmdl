@@ -2,22 +2,68 @@ cultureInfo en-US
 
 	linguisticMetadata =
 			{
-			  "Version": "1.0.0",
+			  "Version": "2.0.0",
 			  "Language": "en-US",
 			  "Entities": {
 			    "dim_geography.region": {
-			      "Binding": {
-			        "ConceptualEntity": "dim_geography",
-			        "ConceptualProperty": "REGION"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_geography",
+			          "ConceptualProperty": "REGION"
+			        }
 			      },
 			      "State": "Generated"
 			    },
 			    "table_measures.net_revenue": {
-			      "Binding": {
-			        "ConceptualEntity": "_Measures",
-			        "ConceptualProperty": "Net Revenue"
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Net Revenue"
+			        }
 			      },
 			      "State": "Generated"
+			    },
+			    "fact_order_line.sales_channel": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "fact_order_line",
+			          "ConceptualProperty": "SALES_CHANNEL"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Sales Channel": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "table_measures.units_sold": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_Measures",
+			          "ConceptualProperty": "Units Sold"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Units Sold": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
 			    }
 			  }
 			}

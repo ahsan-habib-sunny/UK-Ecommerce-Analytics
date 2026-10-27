@@ -100,6 +100,13 @@ table fact_returns
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column GEOGRAPHY_KEY = LOOKUPVALUE ( fact_order_line[GEOGRAPHY_KEY], fact_order_line[ORDER_LINE_KEY], fact_returns[ORDER_LINE_KEY] )
+		formatString: 0
+		lineageTag: 2c20a7a4-48ba-445b-ae14-69002d75704a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition fact_returns = m
 		mode: import
 		source =
