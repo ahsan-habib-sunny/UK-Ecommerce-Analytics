@@ -83,3 +83,7 @@ relationship 1d0d8203-91f3-4a7f-afe4-cb419727db4a
 	fromColumn: fact_returns.CUSTOMER_KEY
 	toColumn: 'Customer RFM'.CUSTOMER_KEY
 
+relationship cb38d10e-6dc4-efa1-6086-35656e72d9b4
+	fromColumn: fact_returns.GEOGRAPHY_KEY
+	toColumn: dim_geography.GEOGRAPHY_KEY
+

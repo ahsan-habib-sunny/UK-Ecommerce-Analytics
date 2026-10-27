@@ -1,0 +1,24 @@
+/// Dynamic RLS: each user sees the regions listed for their email in SECURITY_USER_REGION ('All' = everything).
+role 'Regional Manager'
+	modelPermission: read
+
+	tablePermission dim_geography =
+			-- orders, sessions and returns by delivery / visit region
+			VAR _regions = CALCULATETABLE ( VALUES ( SECURITY_USER_REGION[REGION] ), SECURITY_USER_REGION[USER_EMAIL] = USERPRINCIPALNAME () )
+			RETURN "All" IN _regions || dim_geography[REGION] IN _regions
+
+	tablePermission dim_customer =
+			-- customers by home region; keep the anonymous customer (-1) so anonymous web sessions stay visible
+			VAR _regions = CALCULATETABLE ( VALUES ( SECURITY_USER_REGION[REGION] ), SECURITY_USER_REGION[USER_EMAIL] = USERPRINCIPALNAME () )
+			VAR _home = LOOKUPVALUE ( dim_geography[REGION], dim_geography[GEOGRAPHY_KEY], dim_customer[GEOGRAPHY_KEY] )
+			RETURN "All" IN _regions || dim_customer[CUSTOMER_KEY] = -1 || _home IN _regions
+
+	tablePermission 'Customer RFM' =
+			-- calculated table: not reached by other filters, so it needs its own rule (customer home region)
+			VAR _regions = CALCULATETABLE ( VALUES ( SECURITY_USER_REGION[REGION] ), SECURITY_USER_REGION[USER_EMAIL] = USERPRINCIPALNAME () )
+			VAR _geo = LOOKUPVALUE ( dim_customer[GEOGRAPHY_KEY], dim_customer[CUSTOMER_KEY], 'Customer RFM'[CUSTOMER_KEY] )
+			VAR _home = LOOKUPVALUE ( dim_geography[REGION], dim_geography[GEOGRAPHY_KEY], _geo )
+			RETURN "All" IN _regions || _home IN _regions
+
+	annotation PBI_Id = 1f809d72a6dc425caadccbd4be866af9
+

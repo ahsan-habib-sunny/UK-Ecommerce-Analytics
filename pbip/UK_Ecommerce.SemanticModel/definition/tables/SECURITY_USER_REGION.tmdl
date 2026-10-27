@@ -1,0 +1,41 @@
+table SECURITY_USER_REGION
+	isHidden
+	lineageTag: c29ef6be-b313-4270-b48f-e02d878e999c
+
+	column REGION
+		dataType: string
+		isHidden
+		lineageTag: c105ac8a-3596-48f8-be13-d8c0597ae60b
+		summarizeBy: none
+		sourceColumn: REGION
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column USER_EMAIL
+		dataType: string
+		isHidden
+		lineageTag: aff45103-3fbe-44b0-969a-cb15e0fa2c09
+		summarizeBy: none
+		sourceColumn: USER_EMAIL
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SECURITY_USER_REGION = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Database("l2sahzdjg4revkotp6qutyibuu-63rm6farc6puhomuexfdvx42ei.datawarehouse.fabric.microsoft.com", "lh_uk_ecom"),
+				    dbo_SECURITY_USER_REGION = Source{[Schema="dbo",Item="SECURITY_USER_REGION"]}[Data]
+				in
+				    dbo_SECURITY_USER_REGION
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

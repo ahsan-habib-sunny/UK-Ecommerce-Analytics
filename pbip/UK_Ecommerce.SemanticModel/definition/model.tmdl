@@ -10,7 +10,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = ["dim_campaign","dim_channel","dim_customer","dim_date","dim_geography","dim_product","dim_return_reason","fact_marketing_spend","fact_order_line","fact_returns","fact_sessions","RangeStart","RangeEnd","_Measures"]
+annotation PBI_QueryOrder = ["dim_campaign","dim_channel","dim_customer","dim_date","dim_geography","dim_product","dim_return_reason","fact_marketing_spend","fact_order_line","fact_returns","fact_sessions","RangeStart","RangeEnd","_Measures","SECURITY_USER_REGION"]
 
 annotation PBI_ProTooling = ["DevMode","TMDLView_Desktop"]
 
@@ -31,6 +31,9 @@ ref table 'Customer RFM'
 ref table 'Time Intelligence'
 ref table 'Metric Selector'
 ref table 'Dimension Selector'
+ref table SECURITY_USER_REGION
+
+ref role 'Regional Manager'
 
 ref cultureInfo en-US
 

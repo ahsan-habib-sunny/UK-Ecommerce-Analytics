@@ -80,6 +80,13 @@
                 }
               }
             },
+            "labelPosition": {
+              "expr": {
+                "Literal": {
+                  "Value": "'OutsideEnd'"
+                }
+              }
+            },
             "fontSize": {
               "expr": {
                 "Literal": {
