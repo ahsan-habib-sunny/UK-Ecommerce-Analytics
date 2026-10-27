@@ -69,8 +69,17 @@ Repo: github.com/ahsan-habib-sunny/UK-Ecommerce-Analytics · Windows · Git Bash
 
 ## Status
 - Days 1–11 are done and merged to main (PR #8 = Day 11 report). Tags: `v0.6-marts`.
+- Day 12 RLS merged (PR #9):
+  - `snowflake/11_security.sql` → `SECURITY_USER_REGION` (hidden, no relationships). Tenant domain: `ahsantheanalyst29.onmicrosoft.com`.
+  - Role `Regional Manager` filters dim_geography, dim_customer (home region, keep -1) and Customer RFM.
+  - `fact_returns[GEOGRAPHY_KEY]` is a LOOKUPVALUE calculated column with a relationship to dim_geography.
+  - Expected values: London £2,829,707 / 35,513 orders / 1,080,184 sessions; Scotland £1,525,431 / 18,198 / 569,947.
+- Day 12 part 2 done:
+  - Published; model mapped to "Lakehouse lh_uk_ecom (OAuth)".
+  - Test users london/scotland/north.manager@ahsantheanalyst29.onmicrosoft.com are workspace Viewers and members of the role, and were verified in the service.
+  - Pipeline `pl_uk_ecom_daily` (dataflow → model refresh, daily 06:00) is built and has run (described in `docs/security_and_refresh.md`).
+  - "Test as role" is missing in this tenant's UI; test by signing in as the user in InPrivate.
 - **Next:**
-  - Day 12: dynamic RLS (security table user→region, one role, test users in the M365 dev tenant), publish, then a Fabric pipeline that runs the dataflow and then the model refresh.
   - Day 13: app, plus DAX Studio/VertiPaq tuning (before/after numbers).
   - Day 14: README, write-up, CV bullets, release tag.
 - Update this section when a day is merged.
