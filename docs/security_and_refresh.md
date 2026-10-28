@@ -49,6 +49,22 @@ Checked in Desktop (**View as**) and in the service, signing in as each test use
    - RLS applies only to Viewers. Admin, Member and Contributor roles bypass it.
    - Viewers need no Lakehouse or Snowflake access (Import mode). Refresh runs under the connection's credential.
 
+## Delivery: the Power BI App
+
+Managers don't use the workspace. They use the app **UK E-commerce Insights**, which contains only the report, with the 5 pages as its menu.
+
+| Setting | Value | Why |
+|---|---|---|
+| Content | The report only | Dataflow, pipeline, Lakehouse and model stay hidden from business users |
+| Audience | **Regional Managers** (the 3 managers) | One audience. Add more later (e.g. a Marketing audience that sees only the marketing pages) |
+| Share / Build / Copy | Off | View only. Build permission would let users query the model directly, including the hidden security table |
+| Workspace access for managers | **Removed** | The App is their only way in. The workspace is for builders |
+
+- **RLS still applies in the App**, because it uses the same semantic model. Members must stay in **Security → Regional Manager**.
+- **Releasing changes:** publish from Desktop, check the report in the workspace, then click **Update app**. Users only see new content after Update app, so unfinished work never reaches them.
+- **Tested:** signed in as london.manager in InPrivate → Get app → London only, £2,829,707.
+- **Gotcha hit during testing:** "Request access" until the manager was in the audience **and** the change was released with **Update app**.
+
 ## Daily pipeline: `pl_uk_ecom_daily`
 
 ```
@@ -57,6 +73,15 @@ Checked in Desktop (**View as**) and in the service, signing in as each test use
 
 - **Why a pipeline:** the model must never refresh before the Lakehouse has new data. Two independent schedules can overlap on a slow day and silently publish stale numbers. Here the model refresh only starts after the dataflow **succeeds**. If anything fails, the report keeps yesterday's complete data.
 - The separate schedules on the dataflow and the model are **off**. The pipeline is the only trigger.
+
+### Run times (pipeline activity durations, after the Day 13 tuning)
+
+| Run | Dataflow | Model refresh | Note |
+|---|---|---|---|
+| 1st after publish | 5 min 42 s | 1 min 4 s | Model: full rebuild of all partitions (2 min 13 s before tuning) |
+| 2nd | 6 min 11 s | 50 s | Model: incremental (last 3 months only) |
+
+Pipeline activity times include start-up and status polling, so they are a little longer than the durations in each item's own refresh history.
 - **Each run:**
   - The dataflow re-pulls only the monthly buckets whose `loaded_at` changed.
   - The model refreshes only the last 3 months of partitions.

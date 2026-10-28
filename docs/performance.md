@@ -14,6 +14,7 @@
 | Row counts, measure results | | | unchanged (Net Revenue £19,415,548 · Orders 233,799 · Sessions 7,131,889) |
 | Slowest query (Churn Rate % card) | ~190 ms | ~210 ms | no change (run-to-run noise) |
 | Total query time, Web Funnel page | 136 ms | 88 ms | −35% |
+| **Full model refresh in the service** (first refresh after publish) | **2 min 13 s** | **1 min 4 s** | **−52%** |
 
 ## Diagnosis
 VertiPaq Analyzer showed **three columns using 93% of the model**:
