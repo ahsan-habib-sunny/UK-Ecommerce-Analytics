@@ -12,7 +12,7 @@ Repo: github.com/ahsan-habib-sunny/UK-Ecommerce-Analytics · Windows · Git Bash
 
 ## Hard rules
 - **Power BI Desktop must be CLOSED (without saving) before editing anything under `pbip/`.** If Desktop is open, saving overwrites file edits. Check with `tasklist | grep -i PBIDesktop`.
-- **`sealed/` is git-ignored and holds the hidden-story answer key** (story_spec.md, scenario.toml, hooks.py). Never show its contents to the user unless they ask for the Day 11+ story discovery. The generator reads story parameters from it.
+- **`sealed/` is git-ignored and holds the hidden-story answer key** (story_spec.md, scenario.toml, hooks.py). The stories were revealed on Day 14 and are written up in `docs/insights.md`. Keep the folder out of Git; the generator reads story parameters from it.
 - Never commit secrets: `.env`, `*.p8` and `data/` are ignored. Private keys live in `~/.snowflake/` (`ecom_loader_key.p8`, `ecom_bi_key.p8`).
 - Validate every PBIR change: `python tools/validate_pbir.py pbip/UK_Ecommerce.Report`. It needs `jsonschema` and `referencing`, and must show 0 errors.
 
@@ -21,7 +21,7 @@ Repo: github.com/ahsan-habib-sunny/UK-Ecommerce-Analytics · Windows · Git Bash
 |---|---|
 | `generator/` | Seeded synthetic data (`generate.py`, `ecomgen/*`, `params.toml`). Full run (seed 42) ≈ 8,143,461 rows in ~30s; `--scale 0.0125` ≈ 112k rows. Venv `.venv` at the repo root. |
 | `loader/` | `make_keypair.py --name`, `load_to_snowflake.py` (idempotent PUT + COPY; `--reload`). Reads `.env`. |
-| `snowflake/01…10_*.sql` | setup · RAW tables · loader user · RAW checks · profiling · staging views · DQ checks · marts · marts tests (31) · Fabric user |
+| `snowflake/01…11_*.sql` | setup · RAW tables · loader user · RAW checks · profiling · staging views · DQ checks · marts · marts tests (31) · Fabric user · RLS security table |
 | `docs/` | data_model, data_dictionary, fabric_dataflow, semantic_model, dax_customers, dax_advanced (expected validation values), report |
 | `pbip/UK_Ecommerce.SemanticModel/definition/` | TMDL model. `tables/_Measures.tmdl` holds all measures in display folders. |
 | `pbip/UK_Ecommerce.Report/` | PBIR report, 5 pages. Theme: `StaticResources/RegisteredResources/UKEcomLight.json` |
@@ -58,6 +58,7 @@ Repo: github.com/ahsan-habib-sunny/UK-Ecommerce-Analytics · Windows · Git Bash
   - Field parameters `Metric Selector` (5 metrics) and `Dimension Selector` (Region, Sales Channel, Price Band, Age Band).
 - **Measures cannot reference a field parameter's display column** (composite-key limit; the visual goes blank). Use the `… Order` column instead, as `Sales Mix Title` does.
 - Validation totals: Net Revenue £19,415,548 · Orders 233,799 · Sessions 7,131,889 · Active customers 12M 51,517. More values are in `docs/dax_*.md`.
+- These totals INCLUDE the S7 test-account orders (1,500). The fix is designed in `docs/insights.md` but deliberately NOT applied; the user chose not to reload.
 
 ## Report (PBIR) gotchas
 - Visuals that use field parameters need `fieldParameters` in queryState.
