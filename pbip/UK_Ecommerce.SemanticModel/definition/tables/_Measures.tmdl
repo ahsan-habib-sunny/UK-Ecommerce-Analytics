@@ -191,7 +191,7 @@ table _Measures
 			CALCULATE (
 			    COUNTROWS ( dim_customer ),
 			    dim_customer[IS_PRE_2023] = FALSE (),
-			    NOT ISBLANK ( dim_customer[COHORT_MONTH] )
+			    KEEPFILTERS(NOT ISBLANK ( dim_customer[COHORT_MONTH] ))
 			)
 		formatString: #,0
 		displayFolder: Cohorts

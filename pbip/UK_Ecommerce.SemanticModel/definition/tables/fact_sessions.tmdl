@@ -20,10 +20,13 @@ table fact_sessions
 
 	column SESSION_DATE_KEY
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: a0dfd373-5a10-4b74-a81f-08d881b9e5aa
 		summarizeBy: none
 		sourceColumn: SESSION_DATE_KEY
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -41,37 +44,49 @@ table fact_sessions
 
 	column CUSTOMER_KEY
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 77ce95e1-a02a-4b87-93b4-23db7bc82b73
 		summarizeBy: none
 		sourceColumn: CUSTOMER_KEY
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column CHANNEL_KEY
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: c3c19424-409f-454c-93f8-416b69fadb93
 		summarizeBy: none
 		sourceColumn: CHANNEL_KEY
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column CAMPAIGN_KEY
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 3e60a1cb-c134-4247-bdd6-c773d7cdf3d2
 		summarizeBy: none
 		sourceColumn: CAMPAIGN_KEY
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column GEOGRAPHY_KEY
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: c7f6ab2b-9e3b-43d6-824f-9fdabd9b711f
 		summarizeBy: none
 		sourceColumn: GEOGRAPHY_KEY
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -93,28 +108,37 @@ table fact_sessions
 
 	column PAGEVIEWS
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: b854d223-574a-47b9-9078-4f09a4bb1ca7
 		summarizeBy: sum
 		sourceColumn: PAGEVIEWS
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column ADDED_TO_BASKET
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: 64f2a6a7-4845-4218-9a3e-d4deabb11944
 		summarizeBy: sum
 		sourceColumn: ADDED_TO_BASKET
 
+		changedProperty = IsHidden
+
 		annotation SummarizationSetBy = Automatic
 
 	column CONVERTED
 		dataType: int64
+		isHidden
 		formatString: 0
 		lineageTag: d2c6ef9e-c0d5-4b8b-90c1-944c06947196
 		summarizeBy: sum
 		sourceColumn: CONVERTED
+
+		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 

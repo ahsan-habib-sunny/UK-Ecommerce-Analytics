@@ -87,6 +87,6 @@ Repo: github.com/ahsan-habib-sunny/UK-Ecommerce-Analytics · Windows · Git Bash
   - Model 756.1 MB → 55.8 MB. SESSION_ID, SESSION_START_TS and ORDER_TS are removed after the IR filter step; LOADED_AT is kept for polling.
   - Query speed was already fine (slowest ~200 ms). Write-up: `docs/performance.md`.
   - Before/after `.vpax` and Performance Analyzer JSON files are in `data/` (git-ignored). Parsers: `tools/vpax_summary.py`, `tools/perf_summary.py`.
-- **Next:**
-  - Day 14: README, write-up, CV bullets, release tag.
+- Day 14 done: README, `docs/insights.md` (S7 fix designed, not applied), screenshots in `docs/images/`, PR #13, tag and GitHub release `v1.0`.
+- **Project complete.** Possible follow-ups: apply the S7 fix (needs a RAW reload + full model refresh), cumulative retention toggle, Fabric Git integration and deployment pipelines.
 - Update this section when a day is merged.

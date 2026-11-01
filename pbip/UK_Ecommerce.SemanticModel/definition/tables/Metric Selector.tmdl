@@ -2,11 +2,6 @@
 table 'Metric Selector'
 	lineageTag: 7e77b109-1160-4303-b79f-4450eafc9b3d
 
-	measure selected_metric = SELECTEDVALUE('Metric Selector'[Metric Selector Fields])
-		lineageTag: 3e5f20ae-ff1e-47b8-a7a4-550a7e0d340a
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column 'Metric Selector'
 		lineageTag: e9674125-b70e-4925-8578-bd3662a95fa9
 		summarizeBy: none

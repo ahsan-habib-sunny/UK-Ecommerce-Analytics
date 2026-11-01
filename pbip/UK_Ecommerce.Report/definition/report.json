@@ -48,6 +48,12 @@
       }
     ]
   },
+  "publicCustomVisuals": [
+    "htmlContent443BE3AD55E043BF878BED274D3A6865",
+    "powerKPIMatrixEB2381CC88A8425FBEB1B07FF57784E6",
+    "Datepicker_1687358625",
+    "TornadoChart1452517688218"
+  ],
   "resourcePackages": [
     {
       "name": "SharedResources",
